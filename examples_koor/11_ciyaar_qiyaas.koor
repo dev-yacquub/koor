@@ -1,0 +1,52 @@
+# ==============================================================================
+# 🎮 CIYAARTA QIBAASTA TIRADA (Number Guessing Game)
+# Luuqadda: Koor
+# ==============================================================================
+
+waxaad soo saartaa "==================================================".
+waxaad soo saartaa "    🎮 KU SOO DHAWOOW CIYAARTA QIYAASTA TIRADA!   ".
+waxaad soo saartaa "==================================================".
+
+magac waa waydiin("Fadlan geli magacaaga, saaxiib: ").
+waxaad soo saartaa "Soo dhawoow {magac}! Waxaan doortay tiro u dhaxaysa 1 iyo 50.".
+waxaad soo saartaa "Waxaad haysataa 5 fursadood oo aad ku qiyaasto.\n".
+
+# Dooro tiro qarsoon oo nasiib ah (1 ilaa 50)
+tirada_qarsoon waa nasiib(1, 50).
+
+# Xisaabiyayaasha ciyaarta
+isku_dayo waa 0.
+fursado_haray waa 5.
+waad_badisay waa been.
+qiyaasaha_hore waa [].
+
+inta fursado_haray uu ka weyn yahay 0:
+    waxaad soo saartaa "--------------------------------------------------".
+    waxaad soo saartaa "Fursadaha kuu haray: {fursado_haray} | Isku-day: {isku_dayo}".
+    
+    qiyaas_qoraal waa waydiin("Geli tiradaada aad qiyaastay (1-50): ").
+    qiyaas waa tiro(qiyaas_qoraal).
+    
+    waxaad ku dartaa 1 isku_dayo.
+    waxaad ka jartaa 1 fursado_haray.
+    qiyaasaha_hore.ku_dar(qiyaas).
+
+    # Hubi qiyaasta
+    haddii qiyaas ay la mid tahay tirada_qarsoon:
+        waad_badisay waa run.
+        waxaad soo saartaa "\n🎉 HAMBALYO {magac}! WAAD GUULAYSATAY!".
+        waxaad soo saartaa "Tirada saxda ahayd waa: {tirada_qarsoon}.".
+        waxaad soo saartaa "Waxaad ku heshay {isku_dayo} isku-day oo keliya!".
+        ka bax.
+    hadii kale oo uu qiyaas uu ka weyn yahay tirada_qarsoon:
+        waxaad soo saartaa "📉 Aad bay u WEYN TAHAY! Tiri tiro ka yar.".
+    hadii kale oo uu qiyaas uu ka yar yahay tirada_qarsoon:
+        waxaad soo saartaa "📈 Aad bay u YAR TAHAY! Tiri tiro ka weyn.".
+
+# Haddii fursadihii dhammaadeen iyadoon la helin
+haddii ma waad_badisay:
+    waxaad soo saartaa "\n==================================================".
+    waxaad soo saartaa "😢 WAAN KA XUMAHAY {magac}, FURASADIHII WAY DHAMMAADEEN!".
+    waxaad soo saartaa "Tirada saxda ah ee qarsoonayd waxay ahayd: {tirada_qarsoon}.".
+    waxaad soo saartaa "Qiyaasihii aad samaysay waxay ahaayeen: " + qoraal(qiyaasaha_hore).
+    waxaad soo saartaa "Mar kale isku day! Nabad gelyo!".

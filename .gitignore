@@ -1,0 +1,28 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# PyInstaller build artifacts
+build/
+dist/
+
+# Packaging
+*.egg-info/
+.eggs/
+
+# Testing
+.pytest_cache/
+.coverage
+
+# IDE & OS
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+test_in.txt
+test_out.txt
+test_err.txt

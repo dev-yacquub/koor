@@ -1,0 +1,34 @@
+# 04_ciyaar_qiyaas.so - Ciyaarta Qiyaasidda Tirada
+# ====================================================
+
+soo_daji random
+
+daabac("🎯 Ku soo dhawoow Ciyaarta Qiyaas Tirada!")
+daabac("Kombuyuutarku wuxuu doortay tiro u dhaxaysa 1 iyo 20.")
+
+tirada_qarsoon = random.randint(1, 20)
+fursadaha = 5
+
+inta fursadaha > 0:
+    daabac(f"\nWaxaa kuu haray {fursadaha} fursadood.")
+    jawaab_qoraal = geli("Fadlan qiyaas tirada (1-20): ")
+    
+    isku_day:
+        qiyaas = tiro(jawaab_qoraal)
+    qabo KhaladQiimo:
+        daabac("⚠️ Fadlan geli tiro sax ah!")
+        sii_wad
+
+    haddii qiyaas == tirada_qarsoon:
+        daabac("🎉 Hambalyo! Si sax ah ayaad u heshay tirada!")
+        jooji
+    haddii_kale qiyaas < tirada_qarsoon:
+        daabac("📈 Kor u qaad! Tirada qarsoon way ka weyn tahay.")
+    kale:
+        daabac("📉 Hoos u dhig! Tirada qarsoon way ka yar tahay.")
+
+    fursadaha -= 1
+
+haddii fursadaha == 0:
+    daabac(f"\n😢 Waan ka xunnahay, fursadihii way kaa dhamaadeen.")
+    daabac(f"Tirada saxda ahayd waxay ahayd: {tirada_qarsoon}")

@@ -1,0 +1,38 @@
+# arday_darajo.koor — Nidaamka Dhibcaha & Kaalmaha Ardayda
+# Student Grading & Class Performance System in Koor
+
+ardayda waa [
+    {"magac": "Cali Axmed", "dhibco": 94},
+    {"magac": "Faadumo Jaamac", "dhibco": 82},
+    {"magac": "Warsame Cali", "dhibco": 68},
+    {"magac": "Hodan Nuur", "dhibco": 45}
+].
+
+hawl soo_saar_darajo(dhibco):
+    haddii dhibco >= 90:
+        waxaad soo celisaa "A (Heer Sare)".
+    hadii kale oo ay dhibco >= 80:
+        waxaad soo celisaa "B (Wanaagsan)".
+    hadii kale oo ay dhibco >= 60:
+        waxaad soo celisaa "C (Dhexdhexaad)".
+    kale:
+        waxaad soo celisaa "D (Dhacay)".
+
+waxaad soo saartaa "========================================".
+waxaad soo saartaa "       📚 NATIIJADA IMTIXAANKA ARDAYDA   ".
+waxaad soo saartaa "========================================".
+
+wadarta_dhibcaha waa 0.
+
+mid kastoo ku jira ardayda ( arday ):
+    darajo waa soo_saar_darajo(arday["dhibco"]).
+    waxaad ku dartaa arday["dhibco"] wadarta_dhibcaha.
+    waxaad soo saartaa "{arday.magac}: {arday.dhibco} dhibcood -> {darajo}".
+
+tirada_ardayda waa dherer(ardayda).
+celcelis waa wadarta_dhibcaha / tirada_ardayda.
+
+waxaad soo saartaa "----------------------------------------".
+waxaad soo saartaa "Celceliska Fasalka: {celcelis} dhibcood".
+waxaad soo saartaa "Wadarta Ardayda: {tirada_ardayda} arday".
+waxaad soo saartaa "========================================".

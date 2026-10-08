@@ -1,0 +1,30 @@
+# 06_khalad_qabasho.so - Qabashada iyo Maareynta Khaladaadka
+# ==========================================================
+
+hawl qaybi_tirooyinka(tiro_1, tiro_2):
+    isku_day:
+        natiijo = tiro_1 / tiro_2
+        daabac(f"✅ Natiijada {tiro_1} / {tiro_2} waa: {natiijo}")
+    qabo KhaladEberLooQaybiyay:
+        daabac("❌ Khalad: Tiro laguma qaybin karo eber (0)!")
+    qabo KhaladNooc:
+        daabac("❌ Khalad: Fadlan geli tirooyin sax ah oo keliya!")
+    ugu_dambeyn:
+        daabac("--- Hawshu way dhammaatay ---\n")
+
+daabac("Tijaabada 1: Qaybin sax ah")
+qaybi_tirooyinka(20, 4)
+
+daabac("Tijaabada 2: Qaybinta eber")
+qaybi_tirooyinka(10, 0)
+
+# Tijaabada Tuurista Khalad (Raise Exception)
+hawl xaqiiji_da(da):
+    haddii da < 0:
+        tuur KhaladQiimo("Da'du ma noqon karto tiro ka yar eber!")
+    daabac(f"Da'da la aqbalay waa: {da}")
+
+isku_day:
+    xaqiiji_da(-5)
+qabo KhaladQiimo sida e:
+    daabac(f"Qabasho Khalad: {e}")

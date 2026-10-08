@@ -1,0 +1,33 @@
+# 03_qaamuus_iyo_liis.so - Qaamuusyada iyo Liisaska
+# ====================================================
+
+# Liis ka kooban buundooyinka imtixaanka
+buundooyinka = [85, 92, 78, 90, 65, 99, 88]
+
+daabac("=== WARBIXINTA BUUNDOOYINKA ===")
+daabac(f"Tirada buundooyinka: {dherer(buundooyinka)}")
+daabac(f"Wadarta guud:        {isku_dar(buundooyinka)}")
+daabac(f"Buundada ugu weyn:    {ugu_weyn(buundooyinka)}")
+daabac(f"Buundada ugu yar:     {ugu_yar(buundooyinka)}")
+daabac(f"Kala soocid:          {kala_sooc(buundooyinka)}")
+
+# Qaamuus ka kooban xogta ardayda
+ardayda = {
+    "Cali": 88,
+    "Faadumo": 95,
+    "Axmed": 72,
+    "Hodan": 91,
+    "Sharmaarke": 60
+}
+
+daabac("\n=== NATIIJADA ARDAYDA ===")
+kasta magac, buundo ku ardayda.items():
+    haddii buundo >= 90:
+        darajo = "A (Heer Sare)"
+    haddii_kale buundo >= 80:
+        darajo = "B (Aad u Wanaagsan)"
+    haddii_kale buundo >= 70:
+        darajo = "C (Wanaagsan)"
+    kale:
+        darajo = "D (Dadaal Dheeraad ah)"
+    daabac(f"Ardayga: {magac:<12} | Buundo: {buundo} | Darajo: {darajo}")

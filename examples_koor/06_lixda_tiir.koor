@@ -1,0 +1,131 @@
+# ==============================================================================
+# 🇸🇴 LIXDA TIIR EE LUUQADDA KOOR (THE 6 PILLARS OF KOOR)
+# 1. Variables & Data Types
+# 2. Operators & Expressions
+# 3. Input and Output
+# 4. Control Flow (Conditions & Loops)
+# 5. Functions (Hawlaha)
+# 6. Data Structures (Lists, Dictionaries, Text Sequences)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. VARIABLES & DATA TYPES (DOORSOOMAYAASHA & NOOCYADA XOGTA)
+# ------------------------------------------------------------------------------
+waxaad soo saartaa "=== 1. VARIABLES & DATA TYPES ===".
+magac waa "Aamina".
+da' waa 22.
+waxaad ku dartaa 1 da'.
+waxaad soo saartaa "Magaca: {magac}, Da'da: {da'}".
+
+tiro_idil waa 100.
+tiro_jebis waa 3.14.
+waa_run waa run.
+waa_been waa been.
+eber_xog waa waxba.
+
+waxaad soo saartaa "Nooca tiro_idil waa: " + nooc(tiro_idil).
+waxaad soo saartaa "Nooca tiro_jebis waa: " + nooc(tiro_jebis).
+waxaad soo saartaa "Nooca waa_run waa: " + nooc(waa_run).
+waxaad soo saartaa "Nooca eber_xog waa: " + nooc(eber_xog).
+
+# ------------------------------------------------------------------------------
+# 2. OPERATORS & EXPRESSIONS (XISAABIYAYAASHA & WEEDHAHA)
+# ------------------------------------------------------------------------------
+waxaad soo saartaa "\n=== 2. OPERATORS & EXPRESSIONS ===".
+a waa 10.
+b waa 3.
+waxaad soo saartaa "Isku darka (a + b): " + qoraal(a + b).
+waxaad soo saartaa "Kala jarka (a - b): " + qoraal(a - b).
+waxaad soo saartaa "Isku dhufashada (a * b): " + qoraal(a * b).
+waxaad soo saartaa "Isu qaybinta (a / b): " + qoraal(a / b).
+waxaad soo saartaa "Hadhaaga (a % b): " + qoraal(a % b).
+
+# Natural Somali Comparisons & Logical Operators:
+haddii a uu ka weyn yahay b sidoo kale a ay la mid tahay 10:
+    waxaad soo saartaa "10 wuxuu ka weyn yahay 3 sidoo kale waa 10 (sidoo kale = AND).".
+
+# ------------------------------------------------------------------------------
+# 3. INPUT AND OUTPUT (GELINTA & SOO-SAARISTA)
+# ------------------------------------------------------------------------------
+waxaad soo saartaa "\n=== 3. INPUT AND OUTPUT ===".
+waxaad soo saartaa "Output: Qoraalkan waxaa soo saaray 'waxaad soo saartaa'!".
+magaalo waa "Hargeysa".
+waxaad soo saartaa "Dynamic Interpolation: {magac} waxay ku nooshahay {magaalo}.".
+
+# ------------------------------------------------------------------------------
+# 4. CONTROL FLOW (HANNAANKA XAKAMEYNTA)
+# ------------------------------------------------------------------------------
+waxaad soo saartaa "\n=== 4. CONTROL FLOW ===".
+# Single-line condition:
+x waa 12.
+haddi x ay la mid tahay 12 waxaad soo saartaa "Guul: x ay la mid tahay 12".
+
+# Block condition:
+dhibco waa 88.
+haddii dhibco >= 90:
+    waxaad soo saartaa "Heerka: A".
+hadii kale oo ay dhibco >= 80:
+    waxaad soo saartaa "Heerka: B (Aad u Wanaagsan)".
+kale:
+    waxaad soo saartaa "Heerka: C".
+
+# Repeat loop:
+ku celi 2 jeer:
+    waxaad soo saartaa "Ku celcelin toos ah (Repeat loop)!".
+
+# While loop:
+tirsade waa 1.
+inta tirsade <= 3:
+    waxaad soo saartaa "Wareegga 'inta': {tirsade}".
+    waxaad ku dartaa 1 tirsade.
+
+# ------------------------------------------------------------------------------
+# 5. FUNCTIONS (HAWLAHA)
+# ------------------------------------------------------------------------------
+waxaad soo saartaa "\n=== 5. FUNCTIONS (HAWLAHA) ===".
+hawl labanlaab(n):
+    waxaad soo celisaa n * 2.
+
+jawaab waa labanlaab(25).
+waxaad soo saartaa "Labanlaabka 25 waa: {jawaab}".
+
+# Concise mathematical function style:
+hawshu waa ("iskudhufasho")
+(x * y)
+
+natiijo_xisaab waa qabo hawshan ("iskudhufasho") (6, 7).
+waxaad soo saartaa "Hawsha toosan (6 * 7) waa: {natiijo_xisaab}".
+
+# ------------------------------------------------------------------------------
+# 6. DATA STRUCTURES (QAABABKA XOGTA: LISTS, DICTS, STRINGS)
+# ------------------------------------------------------------------------------
+waxaad soo saartaa "\n=== 6. DATA STRUCTURES ===".
+
+# Lists:
+liis waa [10, 20, 30].
+waxaad soo saartaa "Liiska bilowga: " + qoraal(liis).
+waxaad soo saartaa "Xubinta 0-aad waa: " + qoraal(liis[0]).
+liis.ku_dar(40).
+liis[1] = 99.
+waxaad soo saartaa "Liiska wax laga beddelay: " + qoraal(liis).
+waxaad soo saartaa "Dhererka liiska: " + qoraal(dherer(liis)).
+
+# Iterating list:
+mid kastoo ku jira liis ( shay ):
+    waxaad soo saartaa "Xubin: {shay}".
+
+# Dictionaries (qaamuus):
+arday waa {
+    "magac": "Jaamac",
+    "da'": 20,
+    "magaalo": "Muqdisho"
+}.
+waxaad soo saartaa "Magaca ardayga: " + arday["magac"].
+arday["da'"] = 21.
+waxaad soo saartaa "Da'da la cusboonaysiiyey: " + qoraal(arday["da'"]).
+
+# String text manipulation:
+hadal waa "   soomaaliya ha noolaato   ".
+waxaad soo saartaa "String methods: " + hadal.jar().weyneey().
+
+waxaad soo saartaa "\n🎉 DHAMMAAN LIXDA TIIR EE ASAASIGA AH WAXAY U SHAQEYNAYAAN SI BUUXDA!".

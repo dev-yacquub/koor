@@ -1,0 +1,2849 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+  <meta charset="utf-8">
+  <title>The Koor Programming Language - Core Foundations</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 20mm 16mm;
+      @bottom-left {
+        content: "The Koor Programming Language — Core Foundations";
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 8pt;
+        color: #94a3b8;
+      }
+      @bottom-right {
+        content: counter(page);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 8pt;
+        font-weight: 600;
+        color: #0284c7;
+      }
+    }
+
+    @page:first {
+      margin: 0;
+      @bottom-left { content: normal; }
+      @bottom-right { content: normal; }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Plus Jakarta Sans", "Inter", Roboto, sans-serif;
+      font-size: 10pt;
+      line-height: 1.65;
+      color: #1e293b;
+      background: #ffffff;
+    }
+
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+      margin-top: 6mm;
+    }
+
+    /* ==========================================================
+       COVER PAGE
+       ========================================================== */
+    .cover-page {
+      width: 100vw;
+      height: 100vh;
+      min-height: 297mm;
+      background: linear-gradient(145deg, #070b14 0%, #0c1527 45%, #132038 100%);
+      color: #ffffff;
+      padding: 24mm 22mm 20mm 22mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .cover-bg-glow {
+      position: absolute;
+      top: -20%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, rgba(2, 132, 199, 0) 70%);
+      pointer-events: none;
+    }
+
+    .cover-header {
+      border-left: 3px solid #38bdf8;
+      padding-left: 12px;
+    }
+
+    .cover-badge {
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #38bdf8;
+      text-transform: uppercase;
+    }
+
+    .cover-subbadge {
+      font-size: 7.5pt;
+      letter-spacing: 1.5px;
+      color: #94a3b8;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .cover-center {
+      text-align: center;
+      margin: auto 0;
+      padding: 6mm 0;
+    }
+
+    .koor-bell-svg {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 12px auto;
+      display: block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+    }
+
+    .cover-title {
+      font-size: 54pt;
+      font-weight: 900;
+      letter-spacing: 8px;
+      margin: 0;
+      line-height: 1;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .cover-title-desc {
+      font-size: 14pt;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin: 12px 0 0 0;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-divider {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #38bdf8, #f59e0b);
+      margin: 16px auto;
+      border-radius: 2px;
+    }
+
+    .cover-tagline {
+      font-size: 9pt;
+      color: #cbd5e1;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .cover-features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 8mm;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feat-pill {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 8pt;
+      font-weight: 600;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      background: #38bdf8;
+      border-radius: 50%;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 5mm;
+    }
+
+    .cover-meta-left strong {
+      display: block;
+      font-size: 9pt;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: 0.5px;
+    }
+
+    .cover-meta-left span {
+      font-size: 8pt;
+      color: #94a3b8;
+    }
+
+    .cover-meta-right {
+      text-align: right;
+    }
+
+    .version-tag {
+      display: inline-block;
+      background: #0284c7;
+      color: #ffffff;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 8pt;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .cover-meta-right span:last-child {
+      display: block;
+      font-size: 8pt;
+      color: #94a3b8;
+    }
+
+    /* ==========================================================
+       FRONT MATTER & DEDICATION
+       ========================================================== */
+    .frontmatter-page {
+      padding: 10mm 4mm;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .fm-header h2 {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 1.5px;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .fm-bar {
+      width: 40px;
+      height: 3px;
+      background: #0284c7;
+      margin: 8px 0 20px 0;
+    }
+
+    .dedication-box {
+      background: #f8fafc;
+      border-left: 4px solid #0284c7;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0 24px 0;
+    }
+
+    .dedication-quote {
+      font-size: 9.8pt;
+      font-style: italic;
+      color: #334155;
+      line-height: 1.7;
+      margin: 0 0 8px 0;
+    }
+
+    .dedication-author {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #0284c7;
+      text-align: right;
+      display: block;
+    }
+
+    .fm-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 10px;
+      margin-bottom: 16px;
+    }
+
+    .fm-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 6px 10px;
+    }
+
+    .fm-card-title {
+      font-size: 7.2pt;
+      font-weight: 800;
+      color: #0284c7;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .fm-card-val {
+      font-size: 8pt;
+      font-weight: 500;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    .manifesto-card {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+    }
+
+    .manifesto-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: #166534;
+    }
+
+    .manifesto-card p {
+      font-size: 9pt;
+      color: #1e293b;
+      line-height: 1.6;
+      margin: 0 0 8px 0;
+    }
+
+    .manifesto-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .fm-footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 14px;
+      font-size: 7.8pt;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    /* ==========================================================
+       TABLE OF CONTENTS (2-COLUMN CARDS)
+       ========================================================== */
+    .toc-page {
+      padding: 4mm 0;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .ch-badge {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 7.5pt;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      display: inline-block;
+    }
+
+    .ch-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 8px 0 0 0;
+    }
+
+    .toc-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 10px;
+      margin-top: 8px;
+    }
+
+    .toc-card-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 6px 10px;
+      page-break-inside: avoid;
+    }
+
+    .toc-card-box:nth-child(10) {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .toc-card-box:nth-child(10) .toc-card-num {
+      background: #16a34a;
+    }
+
+    .toc-card-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toc-card-num {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 7pt;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 3px;
+      min-width: 22px;
+      text-align: center;
+    }
+
+    .toc-card-title {
+      font-size: 8.6pt;
+      font-weight: 700;
+      color: #0f172a;
+      text-decoration: none;
+      line-height: 1.2;
+    }
+
+    .toc-card-subs {
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc-sub-line {
+      font-size: 7.2pt;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1.25;
+    }
+
+    .toc-sub-dot {
+      width: 4px;
+      height: 4px;
+      background: #0284c7;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================
+       CHAPTER HEADERS
+       ========================================================== */
+    .chapter-start {
+      margin-top: 4mm;
+      margin-bottom: 7mm;
+      page-break-inside: avoid;
+    }
+
+    .ch-badge-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .ch-badge-eng {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .chapter-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+    }
+
+    .ch-accent-line {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #0284c7 0%, #38bdf8 30%, #e2e8f0 100%);
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+
+    /* ==========================================================
+       SECTION HEADERS
+       ========================================================== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      page-break-after: avoid;
+    }
+
+    .sec-num-badge {
+      background: #f1f5f9;
+      color: #0284c7;
+      border: 1px solid #cbd5e1;
+      font-weight: 800;
+      font-size: 7.5pt;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .section-h3 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .section-h1 {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 18px 0 8px 0;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      page-break-after: avoid;
+    }
+
+    .section-h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 14px 0 6px 0;
+      page-break-after: avoid;
+    }
+
+    .book-para {
+      margin: 0 0 10px 0;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    .inline-code {
+      font-family: "JetBrains Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
+      font-size: 8.5pt;
+      background: #f1f5f9;
+      color: #0369a1;
+      padding: 1.5px 5px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* ==========================================================
+       CODE CARDS
+       ========================================================== */
+    .code-card {
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      margin: 11px 0 15px 0;
+      overflow: hidden;
+      page-break-inside: avoid;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+    }
+
+    .code-card-header {
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 5px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 7.5px;
+      height: 7.5px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .code-card-filename {
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 7.5pt;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .code-card-lang {
+      font-family: -apple-system, sans-serif;
+      font-size: 6.5pt;
+      font-weight: 800;
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .code-body {
+      margin: 0;
+      padding: 10px 14px;
+      font-family: "JetBrains Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
+      font-size: 8.5pt;
+      line-height: 1.5;
+      color: #f1f5f9;
+      background: #0b1120;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* SYNTAX HIGHLIGHTING CLASSES */
+    .syn-keyword { color: #818cf8; font-weight: 700; }
+    .syn-action { color: #34d399; font-weight: 700; }
+    .syn-comp { color: #f472b6; font-weight: 600; }
+    .syn-type { color: #38bdf8; font-weight: 600; }
+    .syn-string { color: #fde047; }
+    .syn-interp { color: #67e8f9; font-weight: 700; }
+    .syn-num { color: #fb923c; font-weight: 600; }
+    .syn-bool { color: #a78bfa; font-weight: 700; }
+    .syn-logic { color: #e879f9; font-weight: 700; }
+    .syn-comment { color: #64748b; font-style: italic; }
+    .syn-cmd { color: #38bdf8; font-weight: 700; }
+    .syn-subcmd { color: #fbbf24; font-weight: 600; }
+    .repl-prompt { color: #34d399; font-weight: 800; }
+    .diag-err { color: #f87171; font-weight: 700; }
+    .diag-tip { color: #fbbf24; font-weight: 700; }
+    .diag-trace { color: #94a3b8; }
+
+    /* ==========================================================
+       TABLES
+       ========================================================== */
+    .table-container {
+      margin: 12px 0 16px 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+      text-align: left;
+    }
+
+    .styled-table thead tr {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    .styled-table th {
+      padding: 8px 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      font-size: 8pt;
+      border: none;
+    }
+
+    .styled-table td {
+      padding: 7px 12px;
+      border-top: 1px solid #e2e8f0;
+      color: #1e293b;
+      vertical-align: middle;
+    }
+
+    .even-row { background: #ffffff; }
+    .odd-row { background: #f8fafc; }
+
+    /* ==========================================================
+       LISTS & QUOTES
+       ========================================================== */
+    .styled-list {
+      margin: 5px 0 11px 0;
+      padding-left: 18px;
+    }
+
+    .styled-list li {
+      margin-bottom: 3.5px;
+      line-height: 1.5;
+    }
+
+    .styled-quote {
+      border-left: 3px solid #0284c7;
+      background: #f0f9ff;
+      margin: 10px 0;
+      padding: 8px 12px;
+      border-radius: 0 6px 6px 0;
+      font-style: italic;
+      color: #0369a1;
+    }
+
+    .output-label {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #475569;
+      margin-top: 5px;
+      margin-bottom: -5px;
+    }
+    </style>
+</head>
+<body>
+  
+    <div class="page cover-page">
+      <div class="cover-bg-glow"></div>
+      <div class="cover-header">
+        <div class="cover-badge">OFFICIAL REFERENCE • EDITION 2026</div>
+        <div class="cover-subbadge">THE NATURAL SOMALI PROGRAMMING LANGUAGE</div>
+      </div>
+      
+      <div class="cover-center">
+        
+    <svg class="koor-bell-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bellGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="bellGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fde047"/>
+          <stop offset="40%" stop-color="#eab308"/>
+          <stop offset="70%" stop-color="#ca8a04"/>
+          <stop offset="100%" stop-color="#854d0e"/>
+        </linearGradient>
+        <linearGradient id="starBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="50%" stop-color="#7dd3fc"/>
+          <stop offset="100%" stop-color="#0284c7"/>
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="100" r="90" fill="url(#bellGlow)"/>
+      <circle cx="100" cy="100" r="88" stroke="#38bdf8" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="4 4"/>
+      
+      <!-- Hanging Cord / Loop -->
+      <path d="M 90 28 C 90 14, 110 14, 110 28 L 110 42 L 90 42 Z" fill="url(#bellGold)" stroke="#ca8a04" stroke-width="1.5"/>
+      <ellipse cx="100" cy="22" rx="5" ry="7" fill="#070b14" stroke="url(#bellGold)" stroke-width="2"/>
+      
+      <!-- The Traditional Somali Wooden Camel Bell (Koor) -->
+      <path d="M 68 46 C 78 44, 122 44, 132 46 C 144 48, 156 128, 148 144 C 142 154, 58 154, 52 144 C 44 128, 56 48, 68 46 Z" 
+            fill="url(#bellGold)" stroke="#78350f" stroke-width="2.5"/>
+      
+      <!-- Traditional Carved Patterns -->
+      <path d="M 62 82 Q 100 90 138 82" stroke="#78350f" stroke-width="2.5" fill="none"/>
+      <path d="M 58 112 Q 100 120 142 112" stroke="#78350f" stroke-width="2.5" fill="none"/>
+      
+      <circle cx="80" cy="98" r="3" fill="#78350f"/>
+      <circle cx="100" cy="101" r="3.5" fill="#78350f"/>
+      <circle cx="120" cy="98" r="3" fill="#78350f"/>
+
+      <!-- Clappers -->
+      <rect x="82" y="140" width="8" height="28" rx="4" fill="url(#bellGold)" stroke="#78350f" stroke-width="1.5"/>
+      <rect x="110" y="140" width="8" height="28" rx="4" fill="url(#bellGold)" stroke="#78350f" stroke-width="1.5"/>
+      <circle cx="86" cy="168" r="5" fill="#ca8a04" stroke="#78350f" stroke-width="1.5"/>
+      <circle cx="114" cy="168" r="5" fill="#ca8a04" stroke="#78350f" stroke-width="1.5"/>
+
+      <!-- Somali Five-Pointed Star -->
+      <polygon points="100,56 104,68 116,68 106,75 110,87 100,80 90,87 94,75 84,68 96,68" 
+               fill="url(#starBlue)"/>
+
+      <!-- Soundwave Waves -->
+      <path d="M 40 85 A 70 70 0 0 0 34 115" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+      <path d="M 28 75 A 90 90 0 0 0 20 125" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
+      <path d="M 160 85 A 70 70 0 0 1 166 115" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
+      <path d="M 172 75 A 90 90 0 0 1 180 125" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" opacity="0.5"/>
+    </svg>
+    
+        <h1 class="cover-title">KOOR</h1>
+        <p class="cover-title-desc">The Somali Programming Language</p>
+        <div class="cover-divider"></div>
+        <p class="cover-tagline">"The Complete Beginner's Guide: Zero-Coding Foundations, Download &amp; Setup, Terminal Reference, the 6 Core CS Pillars, and 4 Hands-On Real-World Projects."</p>
+      </div>
+
+      <div class="cover-features">
+        <div class="feat-pill"><span class="pill-dot"></span> Zero-Coding Foundations</div>
+        <div class="feat-pill"><span class="pill-dot"></span> Download &amp; Setup Guide</div>
+        <div class="feat-pill"><span class="pill-dot"></span> Terminal CLI Commands</div>
+        <div class="feat-pill"><span class="pill-dot"></span> The 6 Core CS Pillars</div>
+        <div class="feat-pill"><span class="pill-dot"></span> 4 Real-World Projects</div>
+      </div>
+
+      <div class="cover-footer">
+        <div class="cover-meta-left">
+          <strong>KOOR CORE ARCHITECTURE TEAM</strong>
+          <span>Language Foundations &amp; Documentation</span>
+        </div>
+        <div class="cover-meta-right">
+          <span class="version-tag">Version 1.0.0</span>
+          <span>Official Handbook</span>
+        </div>
+      </div>
+    </div>
+    
+
+    <div class="page frontmatter-page">
+      <div class="fm-header">
+        <h2>FOUNDATIONS OF PROGRAMMING IN KOOR</h2>
+        <div class="fm-bar"></div>
+      </div>
+
+      <div class="dedication-box">
+        <p class="dedication-quote">
+          "This book is dedicated to aspiring developers, students, and educators. By grounding foundational computer science concepts in authentic, natural Somali grammar, Koor empowers anyone to master computational thinking without linguistic barriers."
+        </p>
+        <span class="dedication-author">— Koor Core Documentation Team</span>
+      </div>
+
+      <div class="fm-meta-grid">
+        <div class="fm-card">
+          <div class="fm-card-title">1. WELCOME TO CODING</div>
+          <div class="fm-card-val">Zero-Coding Foundations, Algorithms, &amp; The Koor Interpreter</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">2. DOWNLOAD &amp; SETUP</div>
+          <div class="fm-card-val">Installation Guide, PATH Configuration, &amp; VS Code Setup</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">3. TERMINAL COMMANDS</div>
+          <div class="fm-card-val">Complete CLI Reference (<code>koor run</code>, <code>repl</code>, <code>check</code>)</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">4. VARIABLES &amp; TYPES</div>
+          <div class="fm-card-val">Memory Containers &amp; Primitive Data Types (<code>tiro</code>, <code>qoraal</code>)</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">5. OPERATORS &amp; LOGIC</div>
+          <div class="fm-card-val">Arithmetic &amp; Natural Comparison Expressions (<code>sidoo kale</code>)</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">6. INPUT &amp; OUTPUT</div>
+          <div class="fm-card-val">Screen Output (<code>waxaad soo saartaa</code>) &amp; Keyboard Input (<code>waydiin</code>)</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">7. CONTROL FLOW</div>
+          <div class="fm-card-val">Decisions (<code>haddii</code>, <code>kale</code>) &amp; Automated Loops (<code>ku celi</code>, <code>inta</code>)</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">8. FUNCTIONS</div>
+          <div class="fm-card-val">Reusable Modules (<code>hawl</code>) &amp; Return Values (<code>waxaad soo celisaa</code>)</div>
+        </div>
+        <div class="fm-card">
+          <div class="fm-card-title">9. DATA STRUCTURES</div>
+          <div class="fm-card-val">Lists (<code>liis</code>) &amp; Key-Value Dictionaries (<code>qaamuus</code>)</div>
+        </div>
+        <div class="fm-card" style="background: #f0fdf4; border-color: #86efac;">
+          <div class="fm-card-title" style="color: #166534;">10. REAL-WORLD PROJECTS</div>
+          <div class="fm-card-val">4 Built Projects (Retail POS, Student Grading, EVC+, Guessing Game)</div>
+        </div>
+      </div>
+
+      <div class="manifesto-card">
+        <h3>Mastering Computer Science Through Natural Somali</h3>
+        <p>This handbook is crafted specifically for absolute beginners who have never programmed before. By working through clear analogies, step-by-step setup tutorials, interactive exercises, and real-life projects, you will develop genuine problem-solving skills that apply to any modern programming language.</p>
+      </div>
+
+      <div class="fm-footer">
+        <span>© 2026 Koor Language Project. Complete Beginner &amp; Reference Edition.</span>
+      </div>
+    </div>
+    
+<h2 class="section-h2"><em>The Comprehensive Guide to Natural Somali Programming, Setup, CLI, the Six Core Pillars & Real-World Projects</em></h2>
+
+                <div class="page toc-page">
+                  <div class="chapter-header">
+                    <div class="ch-badge">TABLE OF CONTENTS</div>
+                    <h1 class="ch-title">Table of Contents</h1>
+                    <div class="ch-accent-line"></div>
+                  </div>
+                  <div class="toc-columns">
+                
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">01</span>
+                        <a href="#chapter-1-welcome-to-programming--koor" class="toc-card-title">Chapter 1: Welcome to Programming & Koor</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>1.1</strong> What is Programming? (Zero-Coding Foundations)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>1.2</strong> How Computers Understand Code (The Execution Pipeline)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>1.3</strong> Why Koor? The Power of Natural Somali Programming</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>1.4</strong> How Statements Work & Why Memory Differs from Screen Output</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">02</span>
+                        <a href="#chapter-2-download--setup-guide" class="toc-card-title">Chapter 2: Download & Setup Guide</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>2.1</strong> System Prerequisites (Windows, macOS, Linux)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>2.2</strong> Downloading Koor from Source</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>2.3</strong> One-Click Windows Installer (<code class="inline-code">KoorSetup.exe</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>2.4</strong> Portable Executable & Built-In <code class="inline-code">koor install</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>2.5</strong> Setting Up Visual Studio Code & Your First File</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">03</span>
+                        <a href="#chapter-3-complete-terminal-commands" class="toc-card-title">Chapter 3: Complete Terminal Commands</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>3.1</strong> Demystifying the Command Line for Total Beginners</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>3.2</strong> Running Koor Files: <code class="inline-code">koor run</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>3.3</strong> The Interactive Playground: <code class="inline-code">koor repl</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>3.4</strong> Validating Syntax: <code class="inline-code">koor check</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>3.5</strong> Built-In Help Reference: <code class="inline-code">koor --help</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>3.6</strong> Essential Terminal Shortcuts & Tips</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">04</span>
+                        <a href="#chapter-4-pillar-1--variables--data-types" class="toc-card-title">Chapter 4: Pillar 1 — Variables & Data Types</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.1</strong> What is a Variable? The Memory Container Concept</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.2</strong> Three Ways to Declare Variables (<code class="inline-code">waa</code>, <code class="inline-code">qeex ... inuu yahay</code>, <code class="inline-code">=</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.3</strong> Variable Identifiers & The Somali Glottal Apostrophe (<code class="inline-code">&#x27;</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.4</strong> Variables vs. String Literals (<code class="inline-code">x</code> vs. <code class="inline-code">&quot;x&quot;</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.5</strong> Natural Verbal In-Place Modifications (<code class="inline-code">da&#x27; waxaad ku dartaa 5</code>, <code class="inline-code">waxaad 1 ku dartaa tirsade</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.6</strong> The 4 Primitive Data Types (<code class="inline-code">tiro</code>, <code class="inline-code">qoraal</code>, <code class="inline-code">run_been</code>, <code class="inline-code">waxba</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>4.7</strong> Type Inspection & Explicit Type Casting (<code class="inline-code">nooc</code>, <code class="inline-code">tiro()</code>, <code class="inline-code">qoraal()</code>)</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">05</span>
+                        <a href="#chapter-5-pillar-2--operators--expressions" class="toc-card-title">Chapter 5: Pillar 2 — Operators & Expressions</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>5.1</strong> Arithmetic Operators & Natural Zero-Signs Math (<code class="inline-code">ku dar</code>, <code class="inline-code">ka jar</code>, <code class="inline-code">ku dhufo</code>, <code class="inline-code">u qaybi</code>, <code class="inline-code">haraaga</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>5.2</strong> Natural Somali Comparison Phrases vs. Symbolic Operators</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>5.3</strong> Gender Agreement in Comparisons (<code class="inline-code">uu</code> vs. <code class="inline-code">ay</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>5.4</strong> Logical Operators (<code class="inline-code">sidoo kale</code>, <code class="inline-code">iyo</code>, <code class="inline-code">ama</code>, <code class="inline-code">ma</code>, <code class="inline-code">ma aha</code>)</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">06</span>
+                        <a href="#chapter-6-pillar-3--input-and-output-io" class="toc-card-title">Chapter 6: Pillar 3 — Input and Output (I/O)</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>6.1</strong> Output Commands: <code class="inline-code">waxaad soo saartaa</code>, <code class="inline-code">daabac</code>, <code class="inline-code">qor</code>, <code class="inline-code">soo saar</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>6.2</strong> Printing Variables, Literals, and Comma-Separated Values</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>6.3</strong> Dynamic String Interpolation (<code class="inline-code">{variable}</code> and <code class="inline-code">{object.field}</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>6.4</strong> Interactive Keyboard Input with <code class="inline-code">waydiin()</code></div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>6.5</strong> Reading Numbers: Why <code class="inline-code">tiro(waydiin(...))</code> is Mandatory</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">07</span>
+                        <a href="#chapter-7-pillar-4--control-flow-decisions--loops" class="toc-card-title">Chapter 7: Pillar 4 — Control Flow (Decisions & Loops)</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.1</strong> Indentation Rules, Colons (<code class="inline-code">:</code>), and Code Blocks</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.2</strong> Single-Line Spoken Conditionals</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.3</strong> Multi-Branch Conditionals (<code class="inline-code">haddii</code>, <code class="inline-code">hadii kale oo ay / uu</code>, <code class="inline-code">kale</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.4</strong> Truthiness Rules in Koor (Truthy vs. Falsy Values)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.5</strong> Fixed-Count Loops (<code class="inline-code">ku celi ... jeer</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.6</strong> Conditional While Loops (<code class="inline-code">inta</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.7</strong> Collection Iteration (<code class="inline-code">mid kastoo ku jira (qof)</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>7.8</strong> Loop Jump Controls: Break (<code class="inline-code">ka bax</code>) and Continue (<code class="inline-code">ka bood</code>)</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">08</span>
+                        <a href="#chapter-8-pillar-5--functions-hawlaha" class="toc-card-title">Chapter 8: Pillar 5 — Functions (Hawlaha)</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>8.1</strong> Defining Block Functions (<code class="inline-code">hawl</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>8.2</strong> Returning Values (<code class="inline-code">waxaad soo celisaa</code>) vs. Printing (<code class="inline-code">daabac</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>8.3</strong> Structured Declarative Functions (<code class="inline-code">magaceed waa</code>, <code class="inline-code">tibxuhu waa</code>, <code class="inline-code">kaydi natiijada</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>8.4</strong> Function Invocation with <code class="inline-code">qabo hawshan</code> (<code class="inline-code">qabo hawshan (hawl) (doodo)</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>8.5</strong> Parameters, Arguments, and Local Scope</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>8.6</strong> Recursive Functions (Functions Calling Themselves)</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">09</span>
+                        <a href="#chapter-9-pillar-6--data-structures" class="toc-card-title">Chapter 9: Pillar 6 — Data Structures</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>9.1</strong> Ordered Lists (<code class="inline-code">liis</code>): Indexing, Zero-Based Access, & Mutation</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>9.2</strong> Built-In List Methods (<code class="inline-code">.ku_dar()</code>, <code class="inline-code">.ka_saar()</code>, <code class="inline-code">.kala_sooc()</code>, <code class="inline-code">.rog()</code>, <code class="inline-code">dherer()</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>9.3</strong> Key-Value Dictionaries (<code class="inline-code">qaamuus</code>): Bracket & Dot Notations</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>9.4</strong> Text Sequences & String Methods (<code class="inline-code">.jar()</code>, <code class="inline-code">.weyneey()</code>, <code class="inline-code">.yaree()</code>, <code class="inline-code">.beddel()</code>, <code class="inline-code">.kala_bax()</code>)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>9.5</strong> Built-In Mathematical & Utility Functions (<code class="inline-code">nasiib</code>, <code class="inline-code">xidid</code>, <code class="inline-code">qaanso</code>)</div></div>
+                    </div>
+                    
+
+                    <div class="toc-card-box">
+                      <div class="toc-card-top">
+                        <span class="toc-card-num">10</span>
+                        <a href="#chapter-10-real-world-projects-mashaariic-dhab-ah" class="toc-card-title">Chapter 10: Real-World Projects (Mashaariic Dhab Ah)</a>
+                      </div>
+                      <div class="toc-card-subs"><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>10.1</strong> Project 1: Retail Store POS & Invoice Generator</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>10.2</strong> Project 2: Student Grading & Class Analytics System</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>10.3</strong> Project 3: Mobile Money & Digital Banking Wallet (EVC Plus / Zaad)</div><div class="toc-sub-line"><span class="toc-sub-dot"></span><strong>10.4</strong> Project 4: Interactive Number Guessing Game (With Hints & Attempts)</div></div>
+                    </div>
+                    
+</div></div>
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-1">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 1</span>
+                  </div>
+                  <h1 class="chapter-title">Welcome to Programming & Koor</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">If you have never written a single line of code in your life, or feel intimidated by computer science jargon, <strong>welcome! You are in the right place.</strong> This chapter builds your foundation from absolute ground zero, assuming no prior technical background whatsoever.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">1.1</span>
+                  <h3 class="section-h3">What is Programming? (Zero-Coding Foundations)</h3>
+                </div>
+                
+<p class="book-para">Computers are remarkably fast and capable machines, but <strong>they cannot think on their own</strong>. A computer has no independent consciousness, intuition, or common sense. Left alone, it cannot perform any task without an unambiguous, step-by-step list of instructions written by a human.</p>
+<blockquote class="styled-quote">🥪 <strong>The Recipe Analogy (How Code Works):</strong><br>Imagine giving instructions to someone who has never cooked before on how to prepare traditional Somali flatbread (<em>Canjeero</em> or <em>Sabaayad</em>):<br>1. Take a large mixing bowl.<br>2. Measure 2 cups of flour and 1 cup of lukewarm water.<br>3. Stir continuously for 5 minutes until smooth.<br>4. Pour one ladle of batter onto the hot pan.<br><br>That ordered sequence of steps is called an <strong>Algorithm</strong>. When you express an algorithm in a precise formal syntax that a computer can read and execute, your instructions are called <strong>Code</strong>, and the craft of writing them is called <strong>Programming</strong>.</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">1.2</span>
+                  <h3 class="section-h3">How Computers Understand Code (The Execution Pipeline)</h3>
+                </div>
+                
+<p class="book-para">When you write a program in Koor, you simply create a standard text file whose name ends with the <code class="inline-code">.koor</code> extension (such as <code class="inline-code">hello.koor</code>).</p>
+<p class="book-para">How does your text turn into actions on the computer screen?</p>
+<p class="book-para">1. <strong>The Source File (<code class="inline-code">.koor</code>):</strong> A plain text file containing your human-readable instructions written in authentic Somali syntax.</p>
+<p class="book-para">2. <strong>The Koor Interpreter:</strong> An engine on your computer that reads your instructions line by line, checks them for grammar rules, translates them into low-level machine instructions, and executes them.</p>
+<p class="book-para">3. <strong>The Standard Output:</strong> The terminal screen where results, messages, calculations, and answers are displayed back to you.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">1.3</span>
+                  <h3 class="section-h3">Why Koor? The Power of Natural Somali Programming</h3>
+                </div>
+                
+<p class="book-para">Almost every widely used programming language in the world—such as Python, Java, or C++—is designed around English vocabulary (<code class="inline-code">if</code>, <code class="inline-code">while</code>, <code class="inline-code">function</code>, <code class="inline-code">print</code>). For native Somali speakers, this imposes a double burden:</p>
+<ul class="styled-list"><li>You have to learn challenging computer science and mathematical concepts.</li><li>You simultaneously have to navigate foreign English idioms and terminology.</li></ul>
+<p class="book-para"><strong>Koor</strong> eliminates this barrier. It is engineered from the ground up around <strong>authentic natural Somali grammar</strong>. Instead of cryptic foreign phrases, you state facts equatively using <code class="inline-code">waa</code> (<em>is</em>), output information using <code class="inline-code">waxaad soo saartaa</code> (<em>bring forth / print</em>), make decisions using <code class="inline-code">haddii</code> (<em>if</em>), and package reusable actions into <code class="inline-code">hawl</code> (<em>function</em>).</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">1.4</span>
+                  <h3 class="section-h3">How Statements Work & Why Memory Differs from Screen Output</h3>
+                </div>
+                
+<p class="book-para">One of the most common surprises for beginners is running a program and seeing <strong>nothing on the screen</strong>.</p>
+<p class="book-para">Consider this code:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>x <span class="syn-keyword">waa</span> <span class="syn-num">12</span>.</code></pre>
+            </div>
+            
+<p class="book-para">If you run this file with <code class="inline-code">koor run test.koor</code>, the terminal will display <strong>no output at all</strong>! Why?</p>
+<ul class="styled-list"><li>Because storing a value in a variable (<code class="inline-code">x waa 12.</code>) is an <strong>internal memory operation</strong>. You instructed the computer to put the number 12 into a memory slot named <code class="inline-code">x</code>.</li><li>Storing something in memory does <strong>not</strong> print it to the screen. The computer quietly completes the task and exits.</li><li>If you want to see something on the screen, you must give an explicit <strong>output instruction</strong>, such as <code class="inline-code">daabac x</code> or <code class="inline-code">waxaad soo saartaa x</code>.</li></ul>
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-2">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 2</span>
+                  </div>
+                  <h1 class="chapter-title">Download & Setup Guide</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Before you start writing code, let's get Koor installed and configured on your machine. Follow this straightforward step-by-step guide.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">2.1</span>
+                  <h3 class="section-h3">System Prerequisites (Windows, macOS, Linux)</h3>
+                </div>
+                
+<p class="book-para">Koor is lightweight and cross-platform:</p>
+<ul class="styled-list"><li><strong>Operating System:</strong> Windows 10/11, macOS, or any Linux distribution.</li><li><strong>Python Runtime:</strong> Python 3.10 or newer (downloadable free of charge from <a href="https://www.python.org" class="book-link">python.org</a>).</li><li><em>Windows Standalone Note:</em> Windows users can also run the precompiled <code class="inline-code">koor.exe</code> executable, which runs standalone without requiring Python.</li></ul>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">2.2</span>
+                  <h3 class="section-h3">Downloading Koor from Source</h3>
+                </div>
+                
+<p class="book-para">You can obtain Koor directly from its repository:</p>
+<p class="book-para">1. Download the project repository as a ZIP archive or clone it using Git:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code>   git clone https://github.com/your-username/<span class="syn-cmd">koor</span>.git</code></pre>
+            </div>
+            
+<p class="book-para">2. Extract or move the folder to a convenient location on your drive, such as <code class="inline-code">C:\Koor</code> or <code class="inline-code">D:\zdiiv\new coding language</code>.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">2.3</span>
+                  <h3 class="section-h3">One-Click Windows Installer (<code class="inline-code">KoorSetup.exe</code>)</h3>
+                </div>
+                
+<p class="book-para">For the most effortless experience, Koor provides a dedicated <strong>One-Click Standalone Windows Setup Wizard</strong> (<code class="inline-code">KoorSetup.exe</code>). It requires <strong>zero administrative permissions</strong> and eliminates all manual path configurations:</p>
+<p class="book-para">1. Download <strong><code class="inline-code">KoorSetup.exe</code></strong>.</p>
+<p class="book-para">2. Double-click the installer to launch the modern graphical setup wizard.</p>
+<p class="book-para">3. Click <strong>"Rakib Koor (Install Now)"</strong>.</p>
+<p class="book-para">4. The installer automatically:</p>
+<ul class="styled-list"><li>Copies Koor to <code class="inline-code">%LocalAppData%\Programs\Koor\</code>.</li><li><strong>Automatically adds Koor to your User <code class="inline-code">PATH</code></strong> in the Windows Registry (<code class="inline-code">HKCU\Environment</code>).</li><li>Broadcasts <code class="inline-code">WM_SETTINGCHANGE</code> so all terminals immediately recognize <code class="inline-code">koor</code> without restarting your computer.</li><li>Associates <code class="inline-code">.koor</code> files so you can double-click any <code class="inline-code">.koor</code> script to run it directly.</li><li>Adds the <strong>"Ku wad Koor (Run with Koor)"</strong> option to the Windows Explorer right-click context menu.</li><li>Creates Start Menu and Desktop shortcuts for <strong>Koor REPL</strong>.</li></ul>
+<p class="book-para">5. Once installation finishes, click <strong>"Fur Koor REPL Hadda"</strong> or open any PowerShell / CMD terminal and type <code class="inline-code">koor</code> right away!</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">2.4</span>
+                  <h3 class="section-h3">Portable Executable & Built-In <code class="inline-code">koor install</code></h3>
+                </div>
+                
+<p class="book-para">If you downloaded the standalone binary (<code class="inline-code">koor.exe</code>) directly without running the setup wizard:</p>
+<ul class="styled-list"><li>You can run <code class="inline-code">koor.exe</code> immediately from any folder.</li><li>To automatically register it in your Windows PATH and enable double-clicking <code class="inline-code">.koor</code> files, simply run:</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code>  .\<span class="syn-cmd">koor</span>.exe install</code></pre>
+            </div>
+            
+<ul class="styled-list"><li>To remove it at any time, run:</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code>  <span class="syn-cmd">koor</span> uninstall</code></pre>
+            </div>
+            
+<p class="book-para">Koor handles all registry modifications, environment notifications, and file associations natively—no manual path editing or computer restarts required!</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">2.5</span>
+                  <h3 class="section-h3">Setting Up Visual Studio Code & Your First File</h3>
+                </div>
+                
+<p class="book-para"><strong>Visual Studio Code (VS Code)</strong> is the premier free code editor used by professional developers worldwide:</p>
+<p class="book-para">1. Download and install <a href="https://code.visualstudio.com/" class="book-link">Visual Studio Code</a>.</p>
+<p class="book-para">2. Open VS Code, click <strong>File $\rightarrow$ Open Folder...</strong>, and select your Koor directory.</p>
+<p class="book-para">3. In the file explorer, click the <strong>New File</strong> icon and name it <code class="inline-code">hello.koor</code>.</p>
+<p class="book-para">4. Type your first line of Koor code:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>   <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Salaamu calaykum, adduunyo!&quot;</span>.</code></pre>
+            </div>
+            
+<p class="book-para">5. Open the integrated terminal in VS Code by pressing <strong><code class="inline-code">Ctrl + </code> `</strong> (backtick), and type:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code>   <span class="syn-cmd">koor</span> <span class="syn-subcmd">run</span> hello.<span class="syn-cmd">koor</span></code></pre>
+            </div>
+            
+<p class="book-para"><em>(Or press <code class="inline-code">Ctrl + Shift + B</code> to trigger the configured one-click run task!)</em></p>
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-3">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 3</span>
+                  </div>
+                  <h1 class="chapter-title">Complete Terminal Commands</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">The terminal is the developer's command center. This chapter provides a complete guide to all command-line operations in Koor.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">3.1</span>
+                  <h3 class="section-h3">Demystifying the Command Line for Total Beginners</h3>
+                </div>
+                
+<p class="book-para">When beginners first encounter the black terminal screen, it can feel intimidating. Remember:</p>
+<ul class="styled-list"><li>In a graphical interface, you interact using the <strong>mouse</strong> by clicking on icons and buttons.</li><li>In the terminal, you interact using <strong>text</strong>. You type a concise instruction, press <code class="inline-code">Enter</code>, and the computer immediately obeys.</li></ul>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">3.2</span>
+                  <h3 class="section-h3">Running Koor Files: <code class="inline-code">koor run</code></h3>
+                </div>
+                
+<p class="book-para">This is your most frequently used command. It instructs the interpreter to read, parse, and execute a <code class="inline-code">.koor</code> source file from top to bottom.</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code># General syntax:
+<span class="syn-cmd">koor</span> <span class="syn-subcmd">run</span> &lt;filename.<span class="syn-cmd">koor</span>&gt;
+
+# Real examples:
+<span class="syn-cmd">koor</span> <span class="syn-subcmd">run</span> hello.<span class="syn-cmd">koor</span>
+<span class="syn-cmd">koor</span> <span class="syn-subcmd">run</span> examples_koor\01_guulaysatay.<span class="syn-cmd">koor</span>
+<span class="syn-cmd">koor</span> <span class="syn-subcmd">run</span> examples_koor\11_ciyaar_qiyaas.<span class="syn-cmd">koor</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">3.3</span>
+                  <h3 class="section-h3">The Interactive Playground: <code class="inline-code">koor repl</code></h3>
+                </div>
+                
+<p class="book-para"><strong>REPL</strong> stands for <em>Read-Eval-Print Loop</em>. It is an interactive, live scratchpad where you can test ideas instantly without creating a file:</p>
+<p class="book-para">Launch the REPL by typing:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-cmd">koor</span> <span class="syn-subcmd">repl</span></code></pre>
+            </div>
+            
+<p class="book-para">You will see the welcome prompt:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Console Output</div>
+                <div class="code-card-lang">OUTPUT</div>
+              </div>
+              <pre class="code-body"><code>🇸🇴 Koor Interactive REPL (v1.0.0)
+Type your Koor code. Type &#x27;ka bax&#x27; or &#x27;exit&#x27; to quit.
+
+koor&gt; magac waa &quot;Farxaan&quot;.
+koor&gt; waxaad soo saartaa &quot;Soo dhawoow {magac}!&quot;.
+Soo dhawoow Farxaan!
+koor&gt; 10 + 25
+35
+koor&gt; ka bax</code></pre>
+            </div>
+            
+<p class="book-para"><em>(To exit the REPL at any time, type <code class="inline-code">ka bax</code> or press <code class="inline-code">Ctrl + C</code>).</em></p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">3.4</span>
+                  <h3 class="section-h3">Validating Syntax: <code class="inline-code">koor check</code></h3>
+                </div>
+                
+<p class="book-para">This command scans your <code class="inline-code">.koor</code> source file for typos, syntax mistakes, missing quotation marks, or grammar errors <strong>without actually running the program</strong>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-cmd">koor</span> <span class="syn-subcmd">check</span> examples_koor\06_lixda_tiir.<span class="syn-cmd">koor</span></code></pre>
+            </div>
+            
+<p class="book-para">If your code is correct, Koor confirms:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Console Output</div>
+                <div class="code-card-lang">OUTPUT</div>
+              </div>
+              <pre class="code-body"><code>✅ Koodhka naxwihiisu waa sax (Syntax is valid).</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">3.5</span>
+                  <h3 class="section-h3">Built-In Help Reference: <code class="inline-code">koor --help</code></h3>
+                </div>
+                
+<p class="book-para">Whenever you need a quick reminder of the CLI options, pass the <code class="inline-code">--help</code> flag:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Terminal / PowerShell</div>
+                <div class="code-card-lang">POWERSHELL</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-cmd">koor</span> --help</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">3.6</span>
+                  <h3 class="section-h3">Essential Terminal Shortcuts & Tips</h3>
+                </div>
+                
+<p class="book-para">Here are pro-tips to speed up your terminal workflow:</p>
+<p class="book-para">1. <strong>The <code class="inline-code">Tab</code> Key (Auto-Completion):</strong> Never type out long file paths manually. Type the first few letters (e.g., <code class="inline-code">koor run ex</code>) and press <code class="inline-code">Tab</code>—the terminal will automatically complete the name!</p>
+<p class="book-para">2. <strong>Up Arrow (<code class="inline-code">↑</code>):</strong> Recalls the last command you executed so you don't have to retype it.</p>
+<p class="book-para">3. <strong><code class="inline-code">cls</code> (or <code class="inline-code">clear</code>):</strong> Clears cluttered text from your terminal screen.</p>
+<p class="book-para">4. <strong><code class="inline-code">Ctrl + C</code> (Abort):</strong> Immediately halts a running program if it gets stuck in an infinite loop.</p>
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-4">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 4</span>
+                  </div>
+                  <h1 class="chapter-title">Pillar 1 — Variables & Data Types</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">The first foundational pillar of computer science is <strong>Variables and Data Types</strong>.</p>
+<blockquote class="styled-quote">🌱 <strong>Beginner Mental Model (Labeled Storage Boxes):</strong><br>Think of a variable as a labeled storage box in your computer's memory. When you write <code class="inline-code">magac waa &quot;Aamina&quot;.</code>, you create a memory box labeled <code class="inline-code">magac</code> and place the text <code class="inline-code">&quot;Aamina&quot;</code> inside it. Whenever you reference <code class="inline-code">magac</code> later in your code, the computer looks inside the box and retrieves <code class="inline-code">&quot;Aamina&quot;</code>.</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.1</span>
+                  <h3 class="section-h3">What is a Variable? The Memory Container Concept</h3>
+                </div>
+                
+<p class="book-para">In computer programming, data cannot float around in the computer aimlessly. It must be stored in named memory slots so that you can reuse it, modify it, and calculate with it.</p>
+<p class="book-para">A variable consists of three elements:</p>
+<p class="book-para">1. <strong>The Name (Identifier):</strong> What you call the box (e.g., <code class="inline-code">x</code>, <code class="inline-code">magac</code>, <code class="inline-code">da&#x27;</code>).</p>
+<p class="book-para">2. <strong>The Value:</strong> What is stored inside the box (e.g., <code class="inline-code">12</code>, <code class="inline-code">&quot;Aamina&quot;</code>, <code class="inline-code">run</code>).</p>
+<p class="book-para">3. <strong>The Data Type:</strong> The nature of the value (e.g., number, text, boolean).</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.2</span>
+                  <h3 class="section-h3">Three Ways to Declare Variables (<code class="inline-code">waa</code>, <code class="inline-code">qeex ... inuu yahay</code>, <code class="inline-code">=</code>)</h3>
+                </div>
+                
+<p class="book-para">Koor provides three expressive styles to declare and assign variables:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">1. Natural affirmative statement using &#x27;waa&#x27; (recommended):</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># 1. Natural affirmative statement using &#x27;waa&#x27; (recommended):</span>
+magac <span class="syn-keyword">waa</span> <span class="syn-string">&quot;Aamina&quot;</span>.
+da&#x27; <span class="syn-keyword">waa</span> <span class="syn-num">22</span>.
+
+<span class="syn-comment"># 2. Descriptive declaration using &#x27;qeex ... inuu yahay&#x27; (or &#x27;inay tahay&#x27;):</span>
+<span class="syn-action">qeex</span> dhibco <span class="syn-action">inuu yahay</span> <span class="syn-num">95</span>.
+<span class="syn-action">qeex</span> xisaab inay tahay <span class="syn-num">500</span>.
+
+<span class="syn-comment"># 3. Standard symbolic assignment:</span>
+qiimo = <span class="syn-num">150</span>.</code></pre>
+            </div>
+            
+<p class="book-para">In Somali grammar, <code class="inline-code">waa</code> is an equational focus particle that asserts identity or state (<em>"is"</em> or <em>"equals"</em>). Statements naturally end with a period (<code class="inline-code">.</code>).</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.3</span>
+                  <h3 class="section-h3">Variable Identifiers & The Somali Glottal Apostrophe (<code class="inline-code">&#x27;</code>)</h3>
+                </div>
+                
+<p class="book-para">Variable names must adhere to clear rules:</p>
+<ul class="styled-list"><li>Must begin with a letter or underscore (<code class="inline-code">_</code>).</li><li>Can contain letters, digits, and underscores.</li><li><strong>Native Apostrophe Support:</strong> In the Somali Latin alphabet, the apostrophe (<em>galaasad</em>) is a genuine consonant representing the glottal stop. Koor natively permits the apostrophe inside identifiers:</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>  da&#x27; <span class="syn-keyword">waa</span> <span class="syn-num">25</span>.
+  go&#x27;aan <span class="syn-keyword">waa</span> <span class="syn-string">&quot;Wanaagsan&quot;</span>.</code></pre>
+            </div>
+            
+<ul class="styled-list"><li>Cannot contain spaces or mathematical operators (e.g., <code class="inline-code">wadarta guud</code> is invalid; write <code class="inline-code">wadarta_guud</code>).</li><li>Cannot use reserved language keywords like <code class="inline-code">waa</code>, <code class="inline-code">haddii</code>, <code class="inline-code">hawl</code>.</li></ul>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.4</span>
+                  <h3 class="section-h3">Variables vs. String Literals (<code class="inline-code">x</code> vs. <code class="inline-code">&quot;x&quot;</code>)</h3>
+                </div>
+                
+<p class="book-para">This is one of the most critical concepts for beginners to understand:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>x <span class="syn-keyword">waa</span> <span class="syn-num">12</span>.
+
+<span class="syn-keyword">daabac</span> <span class="syn-string">&quot;x&quot;</span>.   <span class="syn-comment"># Output: x   (Prints the literal character &#x27;x&#x27;)</span>
+<span class="syn-keyword">daabac</span> x.     <span class="syn-comment"># Output: 12  (Evaluates the variable x and prints 12)</span></code></pre>
+            </div>
+            
+<blockquote class="styled-quote">⚠️ <strong>The Quotation Mark Rule:</strong><br>* Anything enclosed in quotes (<code class="inline-code">&quot;...&quot;</code> or <code class="inline-code">&#x27;...&#x27;</code>) is a <strong>String Literal</strong>. The computer treats it as literal characters and prints it verbatim. It will <strong>never</strong> look for a variable named <code class="inline-code">x</code> when you write <code class="inline-code">&quot;x&quot;</code>.<br><em> When you omit quotes (<code class="inline-code">daabac x</code>), you tell the computer: </em>"Look into memory, find the box named <code class="inline-code">x</code>, and give me what is inside!"*<br>* If you want to embed a variable inside text, use curly braces: <code class="inline-code">daabac &quot;Qiimaha waa: {x}&quot;</code>.</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.5</span>
+                  <h3 class="section-h3">Natural Verbal In-Place Modifications</h3>
+                </div>
+                
+<p class="book-para">Instead of cryptic symbolic operators like <code class="inline-code">+=</code>, <code class="inline-code">-=</code>, <code class="inline-code">*=</code>, and <code class="inline-code">/=</code>, Koor lets you express modifications using authentic, spoken Somali sentences. Koor supports two natural grammatical word orders:</p>
+<p class="book-para">#### Style 1: Subject-First (<code class="inline-code">&lt;target&gt; waxaad ku dartaa &lt;qiimo&gt;</code>)</p>
+<p class="book-para">This is the most popular, intuitive syntax where you name the variable first:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>da&#x27; <span class="syn-keyword">waa</span> <span class="syn-num">20</span>
+
+da<span class="syn-string">&#x27; waxaad ku dartaa 5       # da&#x27;</span> = da&#x27; + <span class="syn-num">5</span>  (Now <span class="syn-num">25</span>)
+da<span class="syn-string">&#x27; waxaad ka jartaa 2       # da&#x27;</span> = da&#x27; - <span class="syn-num">2</span>  (Now <span class="syn-num">23</span>)
+da<span class="syn-string">&#x27; waxaad ku dhufataa 2      # da&#x27;</span> = da&#x27; * <span class="syn-num">2</span>  (Now <span class="syn-num">46</span>)
+da<span class="syn-string">&#x27; waxaad u qaybisaa 4      # da&#x27;</span> = da&#x27; / <span class="syn-num">4</span>  (Now <span class="syn-num">11.5</span>)
+
+<span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Da&#x27;da cusub waa: {da&#x27;}&quot;</span></code></pre>
+            </div>
+            
+<p class="book-para">#### Style 2: Action-First (<code class="inline-code">waxaad &lt;qiimo&gt; ku dartaa &lt;target&gt;</code>)</p>
+<p class="book-para">Ideal for loop counters and verbal instructions:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>tirsade <span class="syn-keyword">waa</span> <span class="syn-num">1</span>
+
+waxaad <span class="syn-num">1</span> <span class="syn-action">ku dar</span>taa tirsade    <span class="syn-comment"># tirsade increases by 1 (Now 2)</span>
+waxaad <span class="syn-num">5</span> <span class="syn-action">ku dar</span>taa tirsade    <span class="syn-comment"># tirsade increases by 5 (Now 7)</span>
+waxaad <span class="syn-num">2</span> <span class="syn-action">ka jar</span>taa tirsade    <span class="syn-comment"># tirsade decreases by 2 (Now 5)</span></code></pre>
+            </div>
+            
+<p class="book-para">You can also use the concise short forms: <code class="inline-code">ku dar 10 qiimo</code> or <code class="inline-code">ka jar 5 qiimo</code>.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.6</span>
+                  <h3 class="section-h3">The 4 Primitive Data Types</h3>
+                </div>
+                
+<p class="book-para">Every piece of data in Koor belongs to a specific type:</p>
+<div class="table-container"><table class="styled-table">
+<thead><tr>
+<th>Type Name</th>
+<th>Somali Keyword</th>
+<th>Description</th>
+<th>Examples</th>
+</tr></thead><tbody>
+<tr class="even-row">
+<td><strong>Number</strong></td>
+<td><code class="inline-code">tiro</code></td>
+<td>Integers and decimal floating-point values</td>
+<td><code class="inline-code">42</code>, <code class="inline-code">-15</code>, <code class="inline-code">3.1415</code>, <code class="inline-code">0.5</code></td>
+</tr>
+<tr class="odd-row">
+<td><strong>String</strong></td>
+<td><code class="inline-code">qoraal</code></td>
+<td>Text enclosed in double or single quotes</td>
+<td><code class="inline-code">&quot;Muqdisho&quot;</code>, <code class="inline-code">&#x27;Boosaaso&#x27;</code></td>
+</tr>
+<tr class="even-row">
+<td><strong>Boolean</strong></td>
+<td><code class="inline-code">run_been</code></td>
+<td>Binary logical truth values</td>
+<td><code class="inline-code">run</code> (True), <code class="inline-code">been</code> (False)</td>
+</tr>
+<tr class="odd-row">
+<td><strong>Null / None</strong></td>
+<td><code class="inline-code">waxba</code></td>
+<td>The explicit absence of a value</td>
+<td><code class="inline-code">waxba</code></td>
+</tr>
+</tbody></table></div>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">4.7</span>
+                  <h3 class="section-h3">Type Inspection & Explicit Type Casting</h3>
+                </div>
+                
+<p class="book-para">To inspect what type a variable currently holds, use <code class="inline-code">nooc()</code>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-action">waxaad soo saartaa</span> <span class="syn-type">nooc</span>(<span class="syn-num">100</span>).        <span class="syn-comment"># &quot;tiro&quot;</span>
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-type">nooc</span>(<span class="syn-string">&quot;Koor&quot;</span>).     <span class="syn-comment"># &quot;qoraal&quot;</span>
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-type">nooc</span>(<span class="syn-bool">run</span>).        <span class="syn-comment"># &quot;run_been&quot;</span>
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-type">nooc</span>(<span class="syn-bool">waxba</span>).      <span class="syn-comment"># &quot;waxba&quot;</span></code></pre>
+            </div>
+            
+<p class="book-para">To convert explicitly between types:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># String to Number:</span>
+x <span class="syn-keyword">waa</span> <span class="syn-type">tiro</span>(<span class="syn-string">&quot;45&quot;</span>).          <span class="syn-comment"># Converts &quot;45&quot; string into number 45</span>
+
+<span class="syn-comment"># Number to String:</span>
+hadal <span class="syn-keyword">waa</span> <span class="syn-type">qoraal</span>(<span class="syn-num">100</span>).     <span class="syn-comment"># Converts number 100 into string &quot;100&quot;</span>
+
+<span class="syn-comment"># Number to Boolean:</span>
+xaalad <span class="syn-keyword">waa</span> <span class="syn-type">run_been</span>(<span class="syn-num">1</span>).    <span class="syn-comment"># Converts 1 into run (True)</span></code></pre>
+            </div>
+            
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-5">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 5</span>
+                  </div>
+                  <h1 class="chapter-title">Pillar 2 — Operators & Expressions</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Operators are the tools we use to calculate values, transform data, and make comparisons.</p>
+<blockquote class="styled-quote">🌱 <strong>Beginner Mental Model (The Balancing Scale):</strong><br>Think of operators as balancing scales or a kitchen calculator. They take two inputs (such as <code class="inline-code">10</code> and <code class="inline-code">5</code>) and evaluate a result—either performing math (<code class="inline-code">10 + 5</code> $\rightarrow$ <code class="inline-code">15</code>) or checking a truth condition (<code class="inline-code">10 &gt; 5</code> $\rightarrow$ <code class="inline-code">run</code>).</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">5.1</span>
+                  <h3 class="section-h3">Arithmetic Operators & Natural Zero-Signs Math</h3>
+                </div>
+                
+<p class="book-para">Koor supports two expressive styles to perform calculations:</p>
+<p class="book-para">#### Style 1: Natural Zero-Signs Math (Pure Spoken Somali)</p>
+<p class="book-para">Koor allows you to write natural, readable mathematical operations without typing mathematical symbols:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>k1 <span class="syn-keyword">waa</span> <span class="syn-num">15</span> <span class="syn-action">ku dar</span> <span class="syn-num">10</span>      <span class="syn-comment"># 25   (Addition: ku dar = +)</span>
+k2 <span class="syn-keyword">waa</span> <span class="syn-num">30</span> <span class="syn-action">ka jar</span> <span class="syn-num">12</span>      <span class="syn-comment"># 18   (Subtraction: ka jar = -)</span>
+k3 <span class="syn-keyword">waa</span> <span class="syn-num">7</span> <span class="syn-action">ku dhufo</span> <span class="syn-num">8</span>      <span class="syn-comment"># 56   (Multiplication: ku dhufo = *)</span>
+k4 <span class="syn-keyword">waa</span> <span class="syn-num">100</span> <span class="syn-action">u qaybi</span> <span class="syn-num">4</span>     <span class="syn-comment"># 25.0 (Division: u qaybi = /)</span>
+k5 <span class="syn-keyword">waa</span> <span class="syn-num">17</span> <span class="syn-action">haraaga</span> <span class="syn-num">5</span>      <span class="syn-comment"># 2    (Modulo/Remainder: haraaga = %)</span></code></pre>
+            </div>
+            
+<p class="book-para">#### Style 2: Classic Mathematical Operators</p>
+<p class="book-para">Standard algebraic signs are also supported with full operator precedence:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>wadarta <span class="syn-keyword">waa</span> <span class="syn-num">15</span> + <span class="syn-num">10</span>.      <span class="syn-comment"># 25   (+)</span>
+farqiga <span class="syn-keyword">waa</span> <span class="syn-num">30</span> - <span class="syn-num">12</span>.      <span class="syn-comment"># 18   (-)</span>
+taranka <span class="syn-keyword">waa</span> <span class="syn-num">7</span> * <span class="syn-num">8</span>.        <span class="syn-comment"># 56   (*)</span>
+qaybta <span class="syn-keyword">waa</span> <span class="syn-num">100</span> / <span class="syn-num">4</span>.       <span class="syn-comment"># 25.0 (/)</span>
+hadhaaga <span class="syn-keyword">waa</span> <span class="syn-num">17</span> % <span class="syn-num">5</span>.      <span class="syn-comment"># 2    (%)</span></code></pre>
+            </div>
+            
+<blockquote class="styled-quote">⚠️ <strong>Operator Precedence (Order of Operations):</strong><br>Multiplication (<code class="inline-code">*</code>), division (<code class="inline-code">/</code>), and modulo (<code class="inline-code">%</code>) are calculated <strong>before</strong> addition (<code class="inline-code">+</code>) and subtraction (<code class="inline-code">-</code>). Use parentheses <code class="inline-code">(...)</code> to force calculations to occur first:<br>```soomaali<br>natiijo1 waa 5 + 3 * 2.      # 5 + 6 = 11<br>natiijo2 waa (5 + 3) <em> 2.    # 8 </em> 2 = 16<br>```</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">5.2</span>
+                  <h3 class="section-h3">Natural Somali Comparison Phrases vs. Symbolic Operators</h3>
+                </div>
+                
+<p class="book-para">Comparisons evaluate whether a relationship holds between two values, producing <code class="inline-code">run</code> (True) or <code class="inline-code">been</code> (False). Koor natively supports <strong>both</strong> authentic Somali verbal phrases and standard mathematical symbols:</p>
+<div class="table-container"><table class="styled-table">
+<thead><tr>
+<th>Natural Somali Phrase</th>
+<th>Symbol</th>
+<th>Example</th>
+<th>Meaning</th>
+</tr></thead><tbody>
+<tr class="even-row">
+<td><code class="inline-code">ay la mid tahay</code> / <code class="inline-code">uu la mid yahay</code></td>
+<td><code class="inline-code">==</code></td>
+<td><code class="inline-code">x ay la mid tahay 10</code></td>
+<td>Is equal to</td>
+</tr>
+<tr class="odd-row">
+<td><code class="inline-code">aysan la mid ahayn</code> / <code class="inline-code">uusan la mid ahayn</code></td>
+<td><code class="inline-code">!=</code></td>
+<td><code class="inline-code">x aysan la mid ahayn 0</code></td>
+<td>Is not equal to</td>
+</tr>
+<tr class="even-row">
+<td><code class="inline-code">uu ka weyn yahay</code> / <code class="inline-code">ay ka weyn tahay</code></td>
+<td><code class="inline-code">&gt;</code></td>
+<td><code class="inline-code">da&#x27; ay ka weyn tahay 18</code></td>
+<td>Greater than</td>
+</tr>
+<tr class="odd-row">
+<td><code class="inline-code">uu ka yar yahay</code> / <code class="inline-code">ay ka yar tahay</code></td>
+<td><code class="inline-code">&lt;</code></td>
+<td><code class="inline-code">qiimo uu ka yar yahay 50</code></td>
+<td>Less than</td>
+</tr>
+<tr class="even-row">
+<td><code class="inline-code">ka weyn yahay ama la mid yahay</code></td>
+<td><code class="inline-code">&gt;=</code></td>
+<td><code class="inline-code">dhibco &gt;= 80</code></td>
+<td>Greater than or equal to</td>
+</tr>
+<tr class="odd-row">
+<td><code class="inline-code">ka yar yahay ama la mid tahay</code></td>
+<td><code class="inline-code">&lt;=</code></td>
+<td><code class="inline-code">i &lt;= 5</code></td>
+<td>Less than or equal to</td>
+</tr>
+</tbody></table></div>
+<p class="book-para">Both styles are completely interchangeable:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>x <span class="syn-keyword">waa</span> <span class="syn-num">20</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> x &gt; <span class="syn-num">15</span>.                     <span class="syn-comment"># run</span>
+<span class="syn-action">waxaad soo saartaa</span> x <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-num">20</span>.       <span class="syn-comment"># run</span>
+<span class="syn-action">waxaad soo saartaa</span> x <span class="syn-comp">uu ka yar yahay</span> <span class="syn-num">10</span>.       <span class="syn-comment"># been</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">5.3</span>
+                  <h3 class="section-h3">Gender Agreement in Comparisons (<code class="inline-code">uu</code> vs. <code class="inline-code">ay</code>)</h3>
+                </div>
+                
+<p class="book-para">Somali grammar uses grammatical gender for pronouns:</p>
+<ul class="styled-list"><li><code class="inline-code">uu</code> is masculine (e.g., <code class="inline-code">qiimo uu ka weyn yahay 50</code>).</li><li><code class="inline-code">ay</code> is feminine (e.g., <code class="inline-code">da&#x27; ay ka weyn tahay 18</code>).</li></ul>
+<p class="book-para">In Koor, the interpreter gracefully accepts both forms! Whether you write <code class="inline-code">uu ka weyn yahay</code> or <code class="inline-code">ay ka weyn tahay</code>, the logic evaluates accurately.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">5.4</span>
+                  <h3 class="section-h3">Logical Operators (<code class="inline-code">sidoo kale</code>, <code class="inline-code">iyo</code>, <code class="inline-code">ama</code>, <code class="inline-code">ma</code>, <code class="inline-code">ma aha</code>)</h3>
+                </div>
+                
+<p class="book-para">Logical operators allow combining multiple conditions:</p>
+<ul class="styled-list"><li><strong>Logical AND (<code class="inline-code">sidoo kale</code> / <code class="inline-code">iyo</code>):</strong> Evaluates to <code class="inline-code">run</code> only if <strong>both</strong> sides are true.</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>  <span class="syn-keyword">haddii</span> da&#x27; &gt;= <span class="syn-num">18</span> sidoo <span class="syn-keyword">kale</span> shatiga <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-bool">run</span>:
+      <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waad wadi kartaa gaariga.&quot;</span>.</code></pre>
+            </div>
+            
+<ul class="styled-list"><li><strong>Logical OR (<code class="inline-code">ama</code>):</strong> Evaluates to <code class="inline-code">run</code> if <strong>at least one</strong> side is true.</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>  <span class="syn-keyword">haddii</span> maalintu <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-string">&quot;Jimce&quot;</span> <span class="syn-logic">ama</span> maalintu <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-string">&quot;Sabti&quot;</span>:
+      <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waa fasax!&quot;</span>.</code></pre>
+            </div>
+            
+<ul class="styled-list"><li><strong>Logical NOT (<code class="inline-code">ma</code> / <code class="inline-code">ma aha</code>):</strong> Inverts the truth value (<code class="inline-code">run</code> becomes <code class="inline-code">been</code>, <code class="inline-code">been</code> becomes <code class="inline-code">run</code>).</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>  <span class="syn-keyword">haddii</span> <span class="syn-logic">ma</span> roob:
+      <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Bannaanka u bax.&quot;</span>.</code></pre>
+            </div>
+            
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-6">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 6</span>
+                  </div>
+                  <h1 class="chapter-title">Pillar 3 — Input and Output (I/O)</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Programs must interact with human beings to be truly useful.</p>
+<blockquote class="styled-quote">🌱 <strong>Beginner Mental Model (The Billboard and Microphone):</strong><br>- <strong>Output (<code class="inline-code">waxaad soo saartaa</code>):</strong> The program's billboard, displaying messages on the screen.<br>- <strong>Input (<code class="inline-code">waydiin()</code>):</strong> The program's microphone, listening for whatever the user types on the keyboard.</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">6.1</span>
+                  <h3 class="section-h3">Output Commands: <code class="inline-code">waxaad soo saartaa</code>, <code class="inline-code">daabac</code>, <code class="inline-code">qor</code>, <code class="inline-code">soo saar</code></h3>
+                </div>
+                
+<p class="book-para">Koor provides several synonyms for printing to the terminal:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Ku soo dhawoow Koor!&quot;</span>.   <span class="syn-comment"># Formal natural phrase</span>
+<span class="syn-keyword">daabac</span> <span class="syn-string">&quot;Qoraal degdeg ah.&quot;</span>.                 <span class="syn-comment"># Short form</span>
+<span class="syn-keyword">qor</span> <span class="syn-string">&quot;Qoraal kale.&quot;</span>.                         <span class="syn-comment"># Short form</span>
+<span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Hab kale oo loo qoro.&quot;</span>.           <span class="syn-comment"># Short form</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">6.2</span>
+                  <h3 class="section-h3">Printing Variables, Literals, and Comma-Separated Values</h3>
+                </div>
+                
+<p class="book-para">You can print variables directly or print multiple values separated by commas:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>magac <span class="syn-keyword">waa</span> <span class="syn-string">&quot;Cali&quot;</span>.
+dhibco <span class="syn-keyword">waa</span> <span class="syn-num">95</span>.
+
+<span class="syn-comment"># Printing variables directly:</span>
+<span class="syn-keyword">daabac</span> magac.                     <span class="syn-comment"># Output: Cali</span>
+
+<span class="syn-comment"># Printing multiple comma-separated values:</span>
+<span class="syn-keyword">daabac</span> <span class="syn-string">&quot;Ardayga:&quot;</span>, magac, <span class="syn-string">&quot;Dhibcaha:&quot;</span>, dhibco.
+<span class="syn-comment"># Output: Ardayga: Cali Dhibcaha: 95</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">6.3</span>
+                  <h3 class="section-h3">Dynamic String Interpolation (<code class="inline-code">{variable}</code> and <code class="inline-code">{object.field}</code>)</h3>
+                </div>
+                
+<p class="book-para">Instead of concatenating strings with <code class="inline-code">+</code>, embed variables inside text using curly braces <code class="inline-code">{...}</code>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>magaalo <span class="syn-keyword">waa</span> <span class="syn-string">&quot;Boosaaso&quot;</span>.
+heerkul <span class="syn-keyword">waa</span> <span class="syn-num">32</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Magaalada <span class="syn-interp">{magaalo}</span> heerkulkeedu waa <span class="syn-interp">{heerkul}</span>°C.&quot;</span>.
+<span class="syn-comment"># Output: Magaalada Boosaaso heerkulkeedu waa 32°C.</span></code></pre>
+            </div>
+            
+<p class="book-para">Interpolation also supports accessing properties of dictionaries:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>qof <span class="syn-keyword">waa</span> {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Aamina&quot;</span>, <span class="syn-string">&quot;shaqo&quot;</span>: <span class="syn-string">&quot;Dhaqtar&quot;</span>}.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;{qof.magac} waa {qof.shaqo}.&quot;</span>.
+<span class="syn-comment"># Output: Aamina waa Dhaqtar.</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">6.4</span>
+                  <h3 class="section-h3">Interactive Keyboard Input with <code class="inline-code">waydiin()</code></h3>
+                </div>
+                
+<p class="book-para">To prompt the user for keyboard input, use <code class="inline-code">waydiin()</code> (or its aliases <code class="inline-code">weydiin</code>, <code class="inline-code">waxaad waydiisaa</code>):</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>magac <span class="syn-keyword">waa</span> <span class="syn-keyword">waydiin</span>(<span class="syn-string">&quot;Fadlan qor magacaaga: &quot;</span>).
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Salaan sare, <span class="syn-interp">{magac}</span>!&quot;</span>.</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">6.5</span>
+                  <h3 class="section-h3">Reading Numbers: Why <code class="inline-code">tiro(waydiin(...))</code> is Mandatory</h3>
+                </div>
+                
+<blockquote class="styled-quote">⚠️ <strong>Critical Beginner Rule:</strong><br>The <code class="inline-code">waydiin()</code> function <strong>always</strong> returns the user's input as text (<code class="inline-code">qoraal</code>), even if the user types digits.<br><br>If the user types <code class="inline-code">20</code>:<br>```soomaali<br>sanad_qoraal waa waydiin("Geli tirada: ").   # Returns "20" (text)<br># If you do sanad_qoraal + 5, it throws an error or concatenates text!<br>```<br>Whenever you expect a number for math calculations, you <strong>must</strong> wrap <code class="inline-code">waydiin()</code> inside <code class="inline-code">tiro(...)</code>:<br>```soomaali<br>da' waa tiro(waydiin("Geli da'daada: ")).     # Converts to number 20<br>sanad_dambe waa da' + 1.                     # 21 (correct math!)<br>waxaad soo saartaa "Sannadka dambe waxaad noqonaysaa: {sanad_dambe}.".<br>```</blockquote>
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-7">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 7</span>
+                  </div>
+                  <h1 class="chapter-title">Pillar 4 — Control Flow (Decisions & Loops)</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Control flow structures dictate which branches of code execute and how many times statements repeat.</p>
+<blockquote class="styled-quote">🌱 <strong>Beginner Mental Model (Road Forks and Conveyor Belts):</strong><br>Normally, code runs sequentially from top to bottom. Control flow gives you steering power:<br>- <strong>Decisions (<code class="inline-code">haddii</code>):</strong> Like a fork in the road with traffic signals, the computer chooses which path to take based on current conditions.<br>- <strong>Loops (<code class="inline-code">ku celi</code> / <code class="inline-code">inta</code>):</strong> Like an automated factory conveyor belt, the computer repeats a task multiple times without requiring you to duplicate code.</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.1</span>
+                  <h3 class="section-h3">Indentation Rules, Colons (<code class="inline-code">:</code>), and Code Blocks</h3>
+                </div>
+                
+<p class="book-para">In Koor, blocks of code that belong inside a condition, loop, or function are defined by <strong>Indentation</strong> (leading whitespace of 4 spaces or one Tab) following a colon (<code class="inline-code">:</code>):</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">haddii</span> dhibco &gt;= <span class="syn-num">50</span>:
+    <span class="syn-comment"># Everything indented 4 spaces belongs inside this block!</span>
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waad gudubtay.&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Hambalyo!&quot;</span>.
+
+<span class="syn-comment"># This unindented line runs after the block finishes:</span>
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Dhammaad.&quot;</span>.</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.2</span>
+                  <h3 class="section-h3">Single-Line Spoken Conditionals</h3>
+                </div>
+                
+<p class="book-para">For simple, one-line decisions, Koor supports natural spoken sentences without colons or line breaks:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>x <span class="syn-keyword">waa</span> <span class="syn-num">12</span>.
+haddi x <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-num">12</span> <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Guul, x waa 12!&quot;</span>.</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.3</span>
+                  <h3 class="section-h3">Multi-Branch Conditionals (<code class="inline-code">haddii</code>, <code class="inline-code">hadii kale</code>, <code class="inline-code">kale</code>)</h3>
+                </div>
+                
+<p class="book-para">For multi-condition branching, use <code class="inline-code">haddii</code>, followed by <code class="inline-code">hadii kale oo ay</code> or <code class="inline-code">hadii kale oo uu</code> for "else if" branches, and <code class="inline-code">kale:</code> (or <code class="inline-code">haddii kale:</code>) as the fallback default:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>dhibco <span class="syn-keyword">waa</span> <span class="syn-num">84</span>.
+
+<span class="syn-keyword">haddii</span> dhibco &gt;= <span class="syn-num">90</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Darajo: A (Heer Sare)&quot;</span>.
+<span class="syn-action"><span class="syn-action"><span class="syn-keyword">hadii</span> <span class="syn-keyword">kale</span></span> oo ay</span> dhibco &gt;= <span class="syn-num">80</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Darajo: B (Aad u Wanaagsan)&quot;</span>.
+<span class="syn-action"><span class="syn-action"><span class="syn-keyword">hadii</span> <span class="syn-keyword">kale</span></span> oo uu</span> dhibco &gt;= <span class="syn-num">60</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Darajo: C (Dhexdhexaad)&quot;</span>.
+<span class="syn-keyword">kale</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Darajo: D (Dhacay)&quot;</span>.</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.4</span>
+                  <h3 class="section-h3">Truthiness Rules in Koor (Truthy vs. Falsy Values)</h3>
+                </div>
+                
+<p class="book-para">When evaluating expressions inside <code class="inline-code">haddii</code> or <code class="inline-code">inta</code>, Koor treats the following values as <strong>Falsy</strong>:</p>
+<ul class="styled-list"><li><code class="inline-code">been</code> (Boolean False)</li><li><code class="inline-code">waxba</code> (Null / None)</li><li><code class="inline-code">0</code> (Numeric zero)</li><li><code class="inline-code">&quot;&quot;</code> (Empty string)</li></ul>
+<p class="book-para">All other values—including non-zero numbers, non-empty strings, and populated lists—are considered <strong>Truthy</strong>.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.5</span>
+                  <h3 class="section-h3">Fixed-Count Loops (<code class="inline-code">ku celi ... jeer:</code>)</h3>
+                </div>
+                
+<p class="book-para">When you want to repeat an exact block of code a known number of times:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-action">ku <span class="syn-keyword">celi</span></span> <span class="syn-num">4</span> <span class="syn-keyword">jeer</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Koor waa luuqad fudud oo awood badan.&quot;</span>.</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.6</span>
+                  <h3 class="section-h3">Conditional While Loops (<code class="inline-code">inta</code>)</h3>
+                </div>
+                
+<p class="book-para">Executes repeatedly as long as a condition remains true. Notice that in authentic Koor, colons (<code class="inline-code">:</code>) are completely optional:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;--- Wareegga &#x27;inta&#x27; ---&quot;</span>
+tirsade <span class="syn-keyword">waa</span> <span class="syn-num">1</span>
+
+<span class="syn-keyword">inta</span> tirsade <span class="syn-comp">ka yar yahay <span class="syn-logic">ama</span> la <span class="syn-keyword">mid</span> yahay</span> <span class="syn-num">3</span>
+    <span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Tirsade waa: <span class="syn-interp">{tirsade}</span>&quot;</span>
+    waxaad <span class="syn-num">1</span> <span class="syn-action">ku dar</span>taa tirsade</code></pre>
+            </div>
+            
+<p class="book-para">In each step through the loop:</p>
+<p class="book-para">1. <code class="inline-code">tirsade</code> starts at 1, prints <code class="inline-code">Tirsade waa: 1</code>, and increments to 2 via <code class="inline-code">waxaad 1 ku dartaa tirsade</code>.</p>
+<p class="book-para">2. <code class="inline-code">tirsade</code> is 2, prints <code class="inline-code">Tirsade waa: 2</code>, and increments to 3.</p>
+<p class="book-para">3. <code class="inline-code">tirsade</code> is 3, prints <code class="inline-code">Tirsade waa: 3</code>, and increments to 4.</p>
+<p class="book-para">4. When <code class="inline-code">tirsade</code> reaches 4, <code class="inline-code">tirsade ka yar yahay ama la mid yahay 3</code> evaluates to <code class="inline-code">been</code> (False), and the loop terminates!</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.7</span>
+                  <h3 class="section-h3">Collection Iteration (<code class="inline-code">mid kastoo ku jira</code>)</h3>
+                </div>
+                
+<p class="book-para">Koor provides natural, spoken Somali expressions to iterate through every element in a list:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>ardayda <span class="syn-keyword">waa</span> <span class="syn-type">liiska</span> <span class="syn-string">&quot;Cali&quot;</span> <span class="syn-logic">iyo</span> <span class="syn-string">&quot;Aamina&quot;</span> <span class="syn-logic">iyo</span> <span class="syn-string">&quot;Warsame&quot;</span>
+
+<span class="syn-comment"># Style A: Inferred Collection (iterates directly over the active list):</span>
+<span class="syn-action"><span class="syn-keyword">mid</span> <span class="syn-keyword">kastoo</span></span> <span class="syn-action">ku jira</span> (qof)
+    <span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Ku soo dhawoow <span class="syn-interp">{qof}</span>!&quot;</span>
+
+<span class="syn-comment"># Style B: Explicit Collection with parenthesized loop variable:</span>
+<span class="syn-action"><span class="syn-keyword">mid</span> <span class="syn-keyword">kastoo</span></span> <span class="syn-action">ku jira</span> ardayda (qof)
+    <span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Ku soo dhawoow <span class="syn-interp">{qof}</span>!&quot;</span>
+
+<span class="syn-comment"># Style C: Pure Zero-Signs Trailing Variable:</span>
+<span class="syn-action"><span class="syn-keyword">mid</span> <span class="syn-keyword">kastoo</span></span> <span class="syn-action">ku jira</span> ardayda qof
+    <span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Ku soo dhawoow <span class="syn-interp">{qof}</span>!&quot;</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">7.8</span>
+                  <h3 class="section-h3">Loop Jump Controls: Break (<code class="inline-code">ka bax</code>) and Continue (<code class="inline-code">ka bood</code>)</h3>
+                </div>
+                
+<ul class="styled-list"><li><code class="inline-code">ka bax.</code> — <strong>Break</strong>: Immediately exits and terminates the enclosing loop.</li><li><code class="inline-code">ka bood.</code> — <strong>Continue</strong>: Skips the remainder of the current iteration and jumps directly to the next.</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>i <span class="syn-keyword">waa</span> <span class="syn-num">0</span>.
+<span class="syn-keyword">inta</span> i &lt; <span class="syn-num">8</span>:
+    <span class="syn-action">waxaad <span class="syn-action">ku dar</span>taa</span> <span class="syn-num">1</span> i.
+    <span class="syn-keyword">haddii</span> i <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-num">3</span>:
+        <span class="syn-action">ka bood</span>.    <span class="syn-comment"># Skips printing 3</span>
+    <span class="syn-keyword">haddii</span> i <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> <span class="syn-num">6</span>:
+        <span class="syn-action">ka bax</span>.     <span class="syn-comment"># Terminates loop when i reaches 6</span>
+    <span class="syn-action">waxaad soo saartaa</span> i.</code></pre>
+            </div>
+            
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-8">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 8</span>
+                  </div>
+                  <h1 class="chapter-title">Pillar 5 — Functions (Hawlaha)</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Functions allow you to write a block of code once, give it a name, and reuse it whenever needed.</p>
+<blockquote class="styled-quote">🌱 <strong>Beginner Mental Model (The Specialized Assistant):</strong><br>Think of a function as a specialized recipe or a hired assistant. Instead of repeating 10 lines of complex calculation every time, you define a named function (<code class="inline-code">hawl</code>). Whenever you call its name and provide the ingredients (arguments), it performs the task and hands back the result!</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">8.1</span>
+                  <h3 class="section-h3">Defining Block Functions (<code class="inline-code">hawl</code>)</h3>
+                </div>
+                
+<p class="book-para">Declare a function using <code class="inline-code">hawl</code>, followed by the function name, its parameter list inside parentheses, a colon (<code class="inline-code">:</code>), and an indented body:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">hawl</span> salaam(magac):
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Salaamu Calaykum, <span class="syn-interp">{magac}</span>!&quot;</span>.
+
+<span class="syn-comment"># Invoking the function:</span>
+salaam(<span class="syn-string">&quot;Warsame&quot;</span>).
+salaam(<span class="syn-string">&quot;Hodan&quot;</span>).</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">8.2</span>
+                  <h3 class="section-h3">Returning Values (<code class="inline-code">waxaad soo celisaa</code>) vs. Printing (<code class="inline-code">daabac</code>)</h3>
+                </div>
+                
+<p class="book-para">Beginners often confuse <strong>printing</strong> with <strong>returning</strong>:</p>
+<ul class="styled-list"><li><code class="inline-code">daabac</code> / <code class="inline-code">waxaad soo saartaa</code>: Displays text on the terminal screen for human eyes. The computer cannot use that output in further calculations.</li><li><code class="inline-code">waxaad soo celisaa</code> (or <code class="inline-code">celi</code>): Hands the calculated result back to your code so you can save it into a variable or use it in other math!</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">hawl</span> xisaabi_bedka(ballac, <span class="syn-type">dherer</span>):
+    bed <span class="syn-keyword">waa</span> ballac * <span class="syn-type">dherer</span>.
+    <span class="syn-action">waxaad soo celisaa</span> bed.
+
+natiijo <span class="syn-keyword">waa</span> xisaabi_bedka(<span class="syn-num">6</span>, <span class="syn-num">7</span>).
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Bedka goobtu waa: <span class="syn-interp">{natiijo}</span> mitir oo labajibbaaran.&quot;</span>.
+<span class="syn-comment"># Output: Bedka goobtu waa: 42 mitir oo labajibbaaran.</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">8.3</span>
+                  <h3 class="section-h3">Structured Declarative Functions (<code class="inline-code">magaceed waa</code>, <code class="inline-code">tibxuhu waa</code>, <code class="inline-code">kaydi natiijada</code>)</h3>
+                </div>
+                
+<p class="book-para">Koor introduces a structured, declarative syntax that expresses function definitions as clear, natural Somali blocks:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">hawl</span>
+<span class="syn-action"><span class="syn-keyword">magaceed</span> <span class="syn-keyword">waa</span></span> : isku dhufasho
+<span class="syn-action"><span class="syn-keyword">tibxuhu</span> <span class="syn-keyword">waa</span></span> : x , y
+<span class="syn-action"><span class="syn-keyword">hawshu</span> <span class="syn-keyword">waa</span></span> : x <span class="syn-action">ku dhufo</span> y
+<span class="syn-action"><span class="syn-keyword">kaydi</span> <span class="syn-keyword">natiijada</span></span></code></pre>
+            </div>
+            
+<p class="book-para">Every structured function is organized around four clear directives:</p>
+<ul class="styled-list"><li><strong><code class="inline-code">magaceed waa</code></strong>: Assigns the unique name to the function.</li><li><strong><code class="inline-code">tibxuhu waa</code></strong>: Declares the parameters (variables) the function accepts.</li><li><strong><code class="inline-code">hawshu waa</code></strong>: Specifies the calculation, algorithm, or code statements to execute.</li><li><strong><code class="inline-code">kaydi natiijada</code></strong>: Flags that the result should be preserved and returned to the caller.</li></ul>
+<p class="book-para">If a function does not need parameters (a zero-argument function), you simply omit <code class="inline-code">tibxuhu waa</code>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">hawl</span>
+<span class="syn-action"><span class="syn-keyword">magaceed</span> <span class="syn-keyword">waa</span></span> : salaan
+<span class="syn-action"><span class="syn-keyword">hawshu</span> <span class="syn-keyword">waa</span></span> : <span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Ku soo dhawoow dunida Koor!&quot;</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">8.4</span>
+                  <h3 class="section-h3">Function Invocation with <code class="inline-code">qabo hawshan</code></h3>
+                </div>
+                
+<p class="book-para">The primary and most idiomatic way to invoke functions in Koor is using the phrase <strong><code class="inline-code">qabo hawshan</code></strong>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">1. Calling a function with arguments (function name without quotes):</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># 1. Calling a function with arguments (function name without quotes):</span>
+natiijo <span class="syn-keyword">waa</span> <span class="syn-action">qabo hawshan</span> (isku dhufasho) (<span class="syn-num">6</span>, <span class="syn-num">7</span>)
+<span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;Natiijadu waa: <span class="syn-interp">{natiijo}</span>&quot;</span>   <span class="syn-comment"># 42</span>
+
+<span class="syn-comment"># 2. Calling a zero-argument function (no second brackets needed):</span>
+<span class="syn-action">qabo hawshan</span> (salaan)</code></pre>
+            </div>
+            
+<blockquote class="styled-quote">💡 <strong>Key Rules for <code class="inline-code">qabo hawshan</code>:</strong><br>1. <strong>No Quotation Marks:</strong> Place the function name directly inside parentheses without quotes: <code class="inline-code">(isku dhufasho)</code>.<br>2. <strong>Optional Second Brackets:</strong> If the function takes parameters, pass the arguments in the second set of parentheses: <code class="inline-code">(6, 7)</code> or <code class="inline-code">(x, y)</code>. If the function has no parameters, <strong>do not include second brackets</strong>: <code class="inline-code">qabo hawshan (salaan)</code>.<br>3. <strong>Assignment:</strong> You can store the returned value directly into a variable using <code class="inline-code">waa</code>: <code class="inline-code">natiijo waa qabo hawshan (isku dhufasho) (x, y)</code>.</blockquote>
+<p class="book-para">#### Complete Interactive Program Example:</p>
+<p class="book-para">Here is a complete, working Koor program bringing together keyboard input, natural arithmetic, structured function definition, and invocation with <code class="inline-code">qabo hawshan</code>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">1. Capture user inputs from terminal</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># 1. Capture user inputs from terminal</span>
+x <span class="syn-keyword">waa</span> <span class="syn-type">tiro</span> <span class="syn-keyword">waydiin</span> gali lambarka koobaad
+y <span class="syn-keyword">waa</span> <span class="syn-type">tiro</span> <span class="syn-keyword">waydiin</span> gali lambarka labaad
+
+<span class="syn-comment"># 2. Define the structured function</span>
+<span class="syn-keyword">hawl</span>
+<span class="syn-action"><span class="syn-keyword">magaceed</span> <span class="syn-keyword">waa</span></span> : isku dhufasho
+<span class="syn-action"><span class="syn-keyword">tibxuhu</span> <span class="syn-keyword">waa</span></span> : x , y
+<span class="syn-action"><span class="syn-keyword">hawshu</span> <span class="syn-keyword">waa</span></span> : x <span class="syn-action">ku dhufo</span> y
+<span class="syn-action"><span class="syn-keyword">kaydi</span> <span class="syn-keyword">natiijada</span></span>
+
+<span class="syn-comment"># 3. Invoke the function using qabo hawshan</span>
+natiijo <span class="syn-keyword">waa</span> <span class="syn-action">qabo hawshan</span> (isku dhufasho) (x, y)
+
+<span class="syn-comment"># 4. Display the computed result</span>
+<span class="syn-keyword">soo saar</span> <span class="syn-string">&quot;tiradaadu waa <span class="syn-interp">{natiijo}</span>&quot;</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">8.5</span>
+                  <h3 class="section-h3">Parameters, Arguments, and Local Scope</h3>
+                </div>
+                
+<ul class="styled-list"><li><strong>Parameters:</strong> The variable names defined in the function declaration (e.g., <code class="inline-code">x</code> and <code class="inline-code">y</code>).</li><li><strong>Arguments:</strong> The actual values you pass in when calling the function (e.g., <code class="inline-code">6</code> and <code class="inline-code">7</code>).</li><li><strong>Local Scope:</strong> Variables created inside a function exist <strong>only</strong> inside that function. Once the function finishes running, those local variables are removed from memory.</li></ul>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">8.6</span>
+                  <h3 class="section-h3">Recursive Functions (Functions Calling Themselves)</h3>
+                </div>
+                
+<p class="book-para">A function can call itself to solve nested problems, provided it has a base case to stop recursion:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-keyword">hawl</span> faktooriyal(n):
+    <span class="syn-keyword">haddii</span> n &lt;= <span class="syn-num">1</span>:
+        <span class="syn-action">waxaad soo celisaa</span> <span class="syn-num">1</span>.
+    <span class="syn-action">waxaad soo celisaa</span> n * faktooriyal(n - <span class="syn-num">1</span>).
+
+<span class="syn-action">waxaad soo saartaa</span> faktooriyal(<span class="syn-num">5</span>).   <span class="syn-comment"># 120</span></code></pre>
+            </div>
+            
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-9">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 9</span>
+                  </div>
+                  <h1 class="chapter-title">Pillar 6 — Data Structures</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Data structures allow organizing, grouping, and manipulating collections of data in memory.</p>
+<blockquote class="styled-quote">🌱 <strong>Beginner Mental Model (Shopping Lists and ID Cards):</strong><br>- <strong>List (<code class="inline-code">liis</code>):</strong> Think of a grocery shopping list. It is an ordered sequence of items accessed by numerical position (0, 1, 2, ...).<br>- <strong>Dictionary (<code class="inline-code">qaamuus</code>):</strong> Think of an identity card or passport. It contains labeled fields paired with their values: <code class="inline-code">&quot;magac&quot;: &quot;Cali&quot;</code>, <code class="inline-code">&quot;da&#x27;&quot;: 25</code>.</blockquote>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">9.1</span>
+                  <h3 class="section-h3">Ordered Lists (<code class="inline-code">liis</code>): Indexing, Zero-Based Access, & Mutation</h3>
+                </div>
+                
+<p class="book-para">Lists are ordered collections enclosed in square brackets <code class="inline-code">[...]</code>. Items are accessed by <strong>index</strong>, starting at 0:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>ardayda <span class="syn-keyword">waa</span> [<span class="syn-string">&quot;Cali&quot;</span>, <span class="syn-string">&quot;Faadumo&quot;</span>, <span class="syn-string">&quot;Warsame&quot;</span>, <span class="syn-string">&quot;Hodan&quot;</span>].
+
+<span class="syn-comment"># Reading by index:</span>
+<span class="syn-action">waxaad soo saartaa</span> ardayda[<span class="syn-num">0</span>].     <span class="syn-comment"># &quot;Cali&quot;     (First item)</span>
+<span class="syn-action">waxaad soo saartaa</span> ardayda[<span class="syn-num">2</span>].     <span class="syn-comment"># &quot;Warsame&quot;  (Third item)</span>
+
+<span class="syn-comment"># Mutating an element in place:</span>
+ardayda[<span class="syn-num">1</span>] = <span class="syn-string">&quot;Deeqa&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> ardayda.        <span class="syn-comment"># [&quot;Cali&quot;, &quot;Deeqa&quot;, &quot;Warsame&quot;, &quot;Hodan&quot;]</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">9.2</span>
+                  <h3 class="section-h3">Built-In List Methods</h3>
+                </div>
+                
+<p class="book-para">Koor lists provide built-in mutation methods:</p>
+<ul class="styled-list"><li><code class="inline-code">.ku_dar(item)</code> — Appends an item to the end of the list.</li><li><code class="inline-code">.ka_saar()</code> — Removes and returns the last item.</li><li><code class="inline-code">.kala_sooc()</code> — Sorts items in ascending numerical/alphabetical order.</li><li><code class="inline-code">.rog()</code> — Reverses the list in place.</li><li><code class="inline-code">dherer(list)</code> — Returns the total count of items.</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>tirooyin <span class="syn-keyword">waa</span> [<span class="syn-num">40</span>, <span class="syn-num">10</span>, <span class="syn-num">30</span>, <span class="syn-num">20</span>].
+
+tirooyin.ku_dar(<span class="syn-num">50</span>).       <span class="syn-comment"># [40, 10, 30, 20, 50]</span>
+tirooyin.kala_sooc().      <span class="syn-comment"># [10, 20, 30, 40, 50]</span>
+<span class="syn-action">waxaad soo saartaa</span> tirooyin.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Tirada xubnaha: &quot;</span> + <span class="syn-type">qoraal</span>(<span class="syn-type">dherer</span>(tirooyin)).  <span class="syn-comment"># 5</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">9.3</span>
+                  <h3 class="section-h3">Key-Value Dictionaries (<code class="inline-code">qaamuus</code>): Bracket & Dot Notations</h3>
+                </div>
+                
+<p class="book-para">Dictionaries store data as key-value pairs inside curly braces <code class="inline-code">{...}</code>:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>qof <span class="syn-keyword">waa</span> {
+    <span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Axmed&quot;</span>,
+    <span class="syn-string">&quot;da&#x27;&quot;</span>: <span class="syn-num">28</span>,
+    <span class="syn-string">&quot;shaqo&quot;</span>: <span class="syn-string">&quot;Injineer&quot;</span>,
+    <span class="syn-string">&quot;magaalo&quot;</span>: <span class="syn-string">&quot;Kismaayo&quot;</span>
+}.
+
+<span class="syn-comment"># Accessing values (both bracket and dot notations work!):</span>
+<span class="syn-action">waxaad soo saartaa</span> qof[<span class="syn-string">&quot;magac&quot;</span>].     <span class="syn-comment"># &quot;Axmed&quot;</span>
+<span class="syn-action">waxaad soo saartaa</span> qof.shaqo.        <span class="syn-comment"># &quot;Injineer&quot;</span>
+
+<span class="syn-comment"># Updating and adding key-value pairs:</span>
+qof[<span class="syn-string">&quot;da&#x27;&quot;</span>] = <span class="syn-num">29</span>.
+qof.khibrad = <span class="syn-string">&quot;5 sano&quot;</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;{qof.magac} waa {qof.shaqo} ku sugan {qof.magaalo}.&quot;</span>.</code></pre>
+            </div>
+            
+<p class="book-para">You can even modify dictionary values using natural verbal statements:</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>akoon <span class="syn-keyword">waa</span> {<span class="syn-string">&quot;baaqi&quot;</span>: <span class="syn-num">200</span>}.
+<span class="syn-action">waxaad <span class="syn-action">ku dar</span>taa</span> <span class="syn-num">50</span> akoon[<span class="syn-string">&quot;baaqi&quot;</span>].   <span class="syn-comment"># akoon[&quot;baaqi&quot;] is now 250!</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">9.4</span>
+                  <h3 class="section-h3">Text Sequences & String Methods</h3>
+                </div>
+                
+<p class="book-para">Text strings in Koor can be transformed using chaining methods:</p>
+<ul class="styled-list"><li><code class="inline-code">.jar()</code> — Strips whitespace from both ends.</li><li><code class="inline-code">.weyneey()</code> — Converts text to uppercase.</li><li><code class="inline-code">.yaree()</code> — Converts text to lowercase.</li><li><code class="inline-code">.beddel(old, new)</code> — Replaces occurrences of a substring.</li><li><code class="inline-code">.kala_bax(delimiter)</code> — Splits text into a list of words.</li><li><code class="inline-code">dherer(text)</code> — Returns character count.</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>jumlad <span class="syn-keyword">waa</span> <span class="syn-string">&quot;   soomaaliya ha noolaato   &quot;</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> jumlad.jar().weyneey().
+<span class="syn-comment"># Output: SOOMAALIYA HA NOOLAATO</span>
+
+ereyo <span class="syn-keyword">waa</span> jumlad.jar().kala_bax(<span class="syn-string">&quot; &quot;</span>).
+<span class="syn-action">waxaad soo saartaa</span> ereyo.
+<span class="syn-comment"># Output: [&quot;soomaaliya&quot;, &quot;ha&quot;, &quot;noolaato&quot;]</span></code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">9.5</span>
+                  <h3 class="section-h3">Built-In Mathematical & Utility Functions</h3>
+                </div>
+                
+<p class="book-para">Koor provides built-in utilities in the global environment:</p>
+<ul class="styled-list"><li><code class="inline-code">nasiib(min, max)</code> — Generates a random integer between <code class="inline-code">min</code> and <code class="inline-code">max</code>.</li><li><code class="inline-code">xidid(n)</code> — Computes the square root of <code class="inline-code">n</code>.</li><li><code class="inline-code">qaanso(start, stop)</code> — Generates a range list of numbers.</li></ul>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Koor Source (soomaali)</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code>tirsade_nasiib <span class="syn-keyword">waa</span> <span class="syn-type">nasiib</span>(<span class="syn-num">1</span>, <span class="syn-num">10</span>).   <span class="syn-comment"># Random number from 1 to 10</span>
+root_16 <span class="syn-keyword">waa</span> xidid(<span class="syn-num">16</span>).               <span class="syn-comment"># 4.0</span></code></pre>
+            </div>
+            
+
+                <div class="page-break"></div>
+                <div class="chapter-start" id="chapter-10">
+                  <div class="ch-badge-row">
+                    <span class="ch-badge">CHAPTER 10</span>
+                  </div>
+                  <h1 class="chapter-title">Real-World Projects (Mashaariic Dhab Ah)</h1>
+                  <div class="ch-accent-line"></div>
+                </div>
+                
+<p class="book-para">Congratulations! You have now mastered the six core pillars of programming. Now let's apply everything you have learned to build <strong>four complete, practical real-world applications</strong>. Each project includes full executable source code, line-by-line explanations, and realistic terminal outputs.</p>
+
+                <div class="section-header">
+                  <span class="sec-num-badge">10.1</span>
+                  <h3 class="section-h3">Project 1: Retail Store POS & Invoice Generator</h3>
+                </div>
+                
+<p class="book-para">This project simulates a retail Point of Sale (POS) system for a Somali grocery market. It processes a customer's shopping cart, computes item subtotals, tallies the order total, applies a 10% discount if the order reaches or exceeds $80, and prints an itemized invoice.</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">dukaan_qaansheeg.koor — Retail POS &amp; Invoice Generator</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># dukaan_qaansheeg.koor — Retail POS &amp; Invoice Generator</span>
+alaabta <span class="syn-keyword">waa</span> [
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Bariis 25kg&quot;</span>, <span class="syn-string">&quot;qiimo&quot;</span>: <span class="syn-num">24</span>, <span class="syn-string">&quot;xaddi&quot;</span>: <span class="syn-num">2</span>},
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Saliid 5L&quot;</span>, <span class="syn-string">&quot;qiimo&quot;</span>: <span class="syn-num">12</span>, <span class="syn-string">&quot;xaddi&quot;</span>: <span class="syn-num">1</span>},
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Sonkor 10kg&quot;</span>, <span class="syn-string">&quot;qiimo&quot;</span>: <span class="syn-num">15</span>, <span class="syn-string">&quot;xaddi&quot;</span>: <span class="syn-num">3</span>}
+].
+
+wadarta_guud <span class="syn-keyword">waa</span> <span class="syn-num">0</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;       🛒 QAANSHEEGTA DUKAANKA BARAKO   &quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+
+<span class="syn-action"><span class="syn-keyword">mid</span> <span class="syn-keyword">kastoo</span></span> <span class="syn-action">ku jira</span> alaabta ( shay ):
+    qiimaha_shayga <span class="syn-keyword">waa</span> shay[<span class="syn-string">&quot;qiimo&quot;</span>] * shay[<span class="syn-string">&quot;xaddi&quot;</span>].
+    <span class="syn-action">waxaad <span class="syn-action">ku dar</span>taa</span> qiimaha_shayga wadarta_guud.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;{shay.magac} x{shay.xaddi} = $<span class="syn-interp">{qiimaha_shayga}</span>&quot;</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;----------------------------------------&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Wadarta Hore: $<span class="syn-interp">{wadarta_guud}</span>&quot;</span>.
+
+qiimo_dhimis <span class="syn-keyword">waa</span> <span class="syn-num">0</span>.
+<span class="syn-keyword">haddii</span> wadarta_guud &gt;= <span class="syn-num">80</span>:
+    qiimo_dhimis <span class="syn-keyword">waa</span> wadarta_guud * <span class="syn-num">0.10</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Qiimo-dhimis (10%): -$<span class="syn-interp">{qiimo_dhimis}</span>&quot;</span>.
+<span class="syn-keyword">kale</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Qiimo-dhimis: $0&quot;</span>.
+
+lacagta_bixinta <span class="syn-keyword">waa</span> wadarta_guud - qiimo_dhimis.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Lacagta Guud ee Bixinta: $<span class="syn-interp">{lacagta_bixinta}</span>&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Mahadsanid! Mar kale soo dhawoow!&quot;</span>.</code></pre>
+            </div>
+            
+<p class="book-para">#### Detailed Step-by-Step Code Explanation:</p>
+<p class="book-para">1. <strong>The Cart Data Structure (<code class="inline-code">alaabta</code>):</strong> We define a list <code class="inline-code">[...]</code> containing dictionary records <code class="inline-code">{...}</code>. Each item contains three properties: item description (<code class="inline-code">&quot;magac&quot;</code>), unit price (<code class="inline-code">&quot;qiimo&quot;</code>), and purchase quantity (<code class="inline-code">&quot;xaddi&quot;</code>).</p>
+<p class="book-para">2. <strong>Total Accumulator (<code class="inline-code">wadarta_guud = 0</code>):</strong> We initialize a numerical variable at zero to accumulate the running grand total.</p>
+<p class="book-para">3. <strong>The Item Processing Loop (<code class="inline-code">mid kastoo ku jira alaabta ( shay ):</code>):</strong> This loop iterates through every grocery item. For each item:</p>
+<ul class="styled-list"><li>It calculates the line item subtotal: <code class="inline-code">qiimaha_shayga waa shay[&quot;qiimo&quot;] * shay[&quot;xaddi&quot;].</code></li><li>It increments the running grand total using Koor's natural verbal modification: <code class="inline-code">waxaad ku dartaa qiimaha_shayga wadarta_guud.</code></li><li>It prints the formatted receipt line: <code class="inline-code">{shay.magac} x{shay.xaddi} = ${qiimaha_shayga}</code>.</li></ul>
+<p class="book-para">4. <strong>Conditional Discount Logic (<code class="inline-code">haddii wadarta_guud &gt;= 80:</code>):</strong> We check if the customer spent $80 or more. If true, the system applies a 10% discount (<code class="inline-code">wadarta_guud * 0.10</code>); otherwise, discount remains $0.</p>
+<p class="book-para">5. <strong>Final Net Payable (<code class="inline-code">lacagta_bixinta</code>):</strong> We subtract the discount from the initial subtotal and print the receipt footer.</p>
+<div class="output-label"><strong>Output / Result:</strong></div>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Console Output</div>
+                <div class="code-card-lang">OUTPUT</div>
+              </div>
+              <pre class="code-body"><code>========================================
+       🛒 QAANSHEEGTA DUKAANKA BARAKO   
+========================================
+Bariis 25kg x2 = $48
+Saliid 5L x1 = $12
+Sonkor 10kg x3 = $45
+----------------------------------------
+Wadarta Hore: $105
+Qiimo-dhimis (10%): -$10.5
+Lacagta Guud ee Bixinta: $94.5
+========================================
+Mahadsanid! Mar kale soo dhawoow!</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">10.2</span>
+                  <h3 class="section-h3">Project 2: Student Grading & Class Analytics System</h3>
+                </div>
+                
+<p class="book-para">This project models an academic grading management system. It translates student examination scores into formal letter grades (<code class="inline-code">A</code> to <code class="inline-code">D</code>), tallies class totals, calculates the average class performance, and generates a formatted academic report.</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">arday_darajo.koor — Student Grading &amp; Class Analytics</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># arday_darajo.koor — Student Grading &amp; Class Analytics</span>
+ardayda <span class="syn-keyword">waa</span> [
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Cali Axmed&quot;</span>, <span class="syn-string">&quot;dhibco&quot;</span>: <span class="syn-num">94</span>},
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Faadumo Jaamac&quot;</span>, <span class="syn-string">&quot;dhibco&quot;</span>: <span class="syn-num">82</span>},
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Warsame Cali&quot;</span>, <span class="syn-string">&quot;dhibco&quot;</span>: <span class="syn-num">68</span>},
+    {<span class="syn-string">&quot;magac&quot;</span>: <span class="syn-string">&quot;Hodan Nuur&quot;</span>, <span class="syn-string">&quot;dhibco&quot;</span>: <span class="syn-num">45</span>}
+].
+
+<span class="syn-keyword">hawl</span> soo_saar_darajo(dhibco):
+    <span class="syn-keyword">haddii</span> dhibco &gt;= <span class="syn-num">90</span>:
+        <span class="syn-action">waxaad soo celisaa</span> <span class="syn-string">&quot;A (Heer Sare)&quot;</span>.
+    <span class="syn-action"><span class="syn-action"><span class="syn-keyword">hadii</span> <span class="syn-keyword">kale</span></span> oo ay</span> dhibco &gt;= <span class="syn-num">80</span>:
+        <span class="syn-action">waxaad soo celisaa</span> <span class="syn-string">&quot;B (Wanaagsan)&quot;</span>.
+    <span class="syn-action"><span class="syn-action"><span class="syn-keyword">hadii</span> <span class="syn-keyword">kale</span></span> oo ay</span> dhibco &gt;= <span class="syn-num">60</span>:
+        <span class="syn-action">waxaad soo celisaa</span> <span class="syn-string">&quot;C (Dhexdhexaad)&quot;</span>.
+    <span class="syn-keyword">kale</span>:
+        <span class="syn-action">waxaad soo celisaa</span> <span class="syn-string">&quot;D (Dhacay)&quot;</span>.
+
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;       📚 NATIIJADA IMTIXAANKA ARDAYDA   &quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+
+wadarta_dhibcaha <span class="syn-keyword">waa</span> <span class="syn-num">0</span>.
+
+<span class="syn-action"><span class="syn-keyword">mid</span> <span class="syn-keyword">kastoo</span></span> <span class="syn-action">ku jira</span> ardayda ( arday ):
+    darajo <span class="syn-keyword">waa</span> soo_saar_darajo(arday[<span class="syn-string">&quot;dhibco&quot;</span>]).
+    <span class="syn-action">waxaad <span class="syn-action">ku dar</span>taa</span> arday[<span class="syn-string">&quot;dhibco&quot;</span>] wadarta_dhibcaha.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;{arday.magac}: {arday.dhibco} dhibcood -&gt; <span class="syn-interp">{darajo}</span>&quot;</span>.
+
+tirada_ardayda <span class="syn-keyword">waa</span> <span class="syn-type">dherer</span>(ardayda).
+celcelis <span class="syn-keyword">waa</span> wadarta_dhibcaha / tirada_ardayda.
+
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;----------------------------------------&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Celceliska Fasalka: <span class="syn-interp">{celcelis}</span> dhibcood&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Wadarta Ardayda: <span class="syn-interp">{tirada_ardayda}</span> arday&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.</code></pre>
+            </div>
+            
+<p class="book-para">#### Detailed Step-by-Step Code Explanation:</p>
+<p class="book-para">1. <strong>The Grading Function (<code class="inline-code">hawl soo_saar_darajo(dhibco):</code>):</strong> A modular function that encapsulates the grading rubric. It takes a numerical score and uses <code class="inline-code">haddii</code>, <code class="inline-code">hadii kale oo ay</code>, and <code class="inline-code">kale</code> to evaluate the corresponding tier, returning a descriptive letter grade via <code class="inline-code">waxaad soo celisaa</code>.</p>
+<p class="book-para">2. <strong>Student Records (<code class="inline-code">ardayda</code>):</strong> An array of dictionaries storing student profiles with their respective exam scores.</p>
+<p class="book-para">3. <strong>Iterative Report Generation:</strong> The <code class="inline-code">mid kastoo</code> loop invokes <code class="inline-code">soo_saar_darajo()</code> for each student, adds their score to <code class="inline-code">wadarta_dhibcaha</code>, and prints their formatted report card line.</p>
+<p class="book-para">4. <strong>Statistical Class Average (<code class="inline-code">celcelis</code>):</strong> We use the built-in function <code class="inline-code">dherer(ardayda)</code> to count total students dynamically, then divide total marks by the student count to compute the class average score.</p>
+<div class="output-label"><strong>Output / Result:</strong></div>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Console Output</div>
+                <div class="code-card-lang">OUTPUT</div>
+              </div>
+              <pre class="code-body"><code>========================================
+       📚 NATIIJADA IMTIXAANKA ARDAYDA   
+========================================
+Cali Axmed: 94 dhibcood -&gt; A (Heer Sare)
+Faadumo Jaamac: 82 dhibcood -&gt; B (Wanaagsan)
+Warsame Cali: 68 dhibcood -&gt; C (Dhexdhexaad)
+Hodan Nuur: 45 dhibcood -&gt; D (Dhacay)
+----------------------------------------
+Celceliska Fasalka: 72.25 dhibcood
+Wadarta Ardayda: 4 arday
+========================================</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">10.3</span>
+                  <h3 class="section-h3">Project 3: Mobile Money & Digital Banking Wallet (EVC Plus / Zaad)</h3>
+                </div>
+                
+<p class="book-para">This project simulates a digital mobile money wallet (resembling EVC Plus, Sahal, or Zaad service). It implements account creation, money deposits, withdrawals with strict insufficient balance checks, and balance inquiry statements.</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">banki.koor — Mobile Money &amp; Bank Account Manager</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># banki.koor — Mobile Money &amp; Bank Account Manager</span>
+<span class="syn-keyword">hawl</span> abuur_akoon(magac, baaqi_bilow):
+    <span class="syn-action">waxaad soo celisaa</span> {
+        <span class="syn-string">&quot;magac&quot;</span>: magac,
+        <span class="syn-string">&quot;baaqi&quot;</span>: baaqi_bilow
+    }.
+
+<span class="syn-keyword">hawl</span> dhigo_lacag(akoon, xaddi):
+    <span class="syn-action">waxaad <span class="syn-action">ku dar</span>taa</span> xaddi akoon[<span class="syn-string">&quot;baaqi&quot;</span>].
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waxaad dhigatay $<span class="syn-interp">{xaddi}</span>. Baaqiga cusub waa: ${akoon.baaqi}.&quot;</span>.
+
+<span class="syn-keyword">hawl</span> la_bax_lacag(akoon, xaddi):
+    <span class="syn-keyword">haddii</span> xaddi &gt; akoon[<span class="syn-string">&quot;baaqi&quot;</span>]:
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;❌ Khalad: Lacag kugu filan kuma jirto akoonka!&quot;</span>.
+    <span class="syn-keyword">kale</span>:
+        <span class="syn-action">waxaad <span class="syn-action">ka jar</span>taa</span> xaddi akoon[<span class="syn-string">&quot;baaqi&quot;</span>].
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waxaad la baxday $<span class="syn-interp">{xaddi}</span>. Baaqiga ku haray: ${akoon.baaqi}.&quot;</span>.
+
+<span class="syn-keyword">hawl</span> daabac_warbixin(akoon):
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Akoonka: {akoon.magac} | Baaqiga: ${akoon.baaqi}&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;========================================&quot;</span>.
+
+<span class="syn-comment"># --- Practical Test Scenario ---</span>
+akoon1 <span class="syn-keyword">waa</span> abuur_akoon(<span class="syn-string">&quot;Deeqa Axmed&quot;</span>, <span class="syn-num">500</span>).
+
+dhigo_lacag(akoon1, <span class="syn-num">200</span>).        <span class="syn-comment"># Balance: $700</span>
+la_bax_lacag(akoon1, <span class="syn-num">150</span>).       <span class="syn-comment"># Balance: $550</span>
+la_bax_lacag(akoon1, <span class="syn-num">800</span>).       <span class="syn-comment"># ❌ Error: Insufficient funds</span>
+daabac_warbixin(akoon1).</code></pre>
+            </div>
+            
+<p class="book-para">#### Detailed Step-by-Step Code Explanation:</p>
+<p class="book-para">1. <strong>Account State Factory (<code class="inline-code">abuur_akoon</code>):</strong> Generates and returns a state dictionary containing the account owner's name and opening balance (<code class="inline-code">&quot;baaqi&quot;</code>).</p>
+<p class="book-para">2. <strong>Deposit Operation (<code class="inline-code">dhigo_lacag</code>):</strong> Takes the account object and an amount, mutating the internal balance using natural Somali verbal addition: <code class="inline-code">waxaad ku dartaa xaddi akoon[&quot;baaqi&quot;].</code></p>
+<p class="book-para">3. <strong>Guarded Withdrawal (<code class="inline-code">la_bax_lacag</code>):</strong> Validates the requested transaction against current balance before deducting funds: <code class="inline-code">haddii xaddi &gt; akoon[&quot;baaqi&quot;]:</code>. If funds are insufficient, it rejects the transaction with an error notice. If funds are sufficient, it deducts the amount via <code class="inline-code">waxaad ka jartaa</code> and prints the updated balance.</p>
+<p class="book-para">4. <strong>Statement Generation (<code class="inline-code">daabac_warbixin</code>):</strong> Displays the current account summary.</p>
+<div class="output-label"><strong>Output / Result:</strong></div>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Console Output</div>
+                <div class="code-card-lang">OUTPUT</div>
+              </div>
+              <pre class="code-body"><code>Waxaad dhigatay $200. Baaqiga cusub waa: $700.
+Waxaad la baxday $150. Baaqiga ku haray: $550.
+❌ Khalad: Lacag kugu filan kuma jirto akoonka!
+========================================
+Akoonka: Deeqa Axmed | Baaqiga: $550
+========================================</code></pre>
+            </div>
+            
+
+                <div class="section-header">
+                  <span class="sec-num-badge">10.4</span>
+                  <h3 class="section-h3">Project 4: Interactive Number Guessing Game (With Hints & Attempts)</h3>
+                </div>
+                
+<p class="book-para">This project builds a complete, interactive terminal game. The computer picks a secret random number between 1 and 50 using <code class="inline-code">nasiib(1, 50)</code>. The player has 5 attempts to guess it. After each guess, the game gives real-time feedback whether the guess was "too high" or "too low," while keeping track of all previous guesses.</p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">ciyaar_qiyaas.koor — Interactive Number Guessing Game</div>
+                <div class="code-card-lang">KOOR</div>
+              </div>
+              <pre class="code-body"><code><span class="syn-comment"># ciyaar_qiyaas.koor — Interactive Number Guessing Game</span>
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;==================================================&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;    🎮 KU SOO DHAWOOW CIYAARTA QIYAASTA TIRADA!   &quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;==================================================&quot;</span>.
+
+magac <span class="syn-keyword">waa</span> <span class="syn-keyword">waydiin</span>(<span class="syn-string">&quot;Fadlan geli magacaaga, saaxiib: &quot;</span>).
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Soo dhawoow <span class="syn-interp">{magac}</span>! Waxaan doortay tiro u dhaxaysa 1 iyo 50.&quot;</span>.
+<span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waxaad haysataa 5 fursadood oo aad ku qiyaasto.\n&quot;</span>.
+
+<span class="syn-comment"># Generate a secret random number (1 to 50)</span>
+tirada_qarsoon <span class="syn-keyword">waa</span> <span class="syn-type">nasiib</span>(<span class="syn-num">1</span>, <span class="syn-num">50</span>).
+
+<span class="syn-comment"># Game tracking state</span>
+isku_dayo <span class="syn-keyword">waa</span> <span class="syn-num">0</span>.
+fursado_haray <span class="syn-keyword">waa</span> <span class="syn-num">5</span>.
+waad_badisay <span class="syn-keyword">waa</span> <span class="syn-bool">been</span>.
+qiyaasaha_hore <span class="syn-keyword">waa</span> [].
+
+<span class="syn-keyword">inta</span> fursado_haray <span class="syn-comp">uu ka weyn yahay</span> <span class="syn-num">0</span>:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;--------------------------------------------------&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Fursadaha kuu haray: <span class="syn-interp">{fursado_haray}</span> | Isku-day: <span class="syn-interp">{isku_dayo}</span>&quot;</span>.
+    
+    qiyaas_qoraal <span class="syn-keyword">waa</span> <span class="syn-keyword">waydiin</span>(<span class="syn-string">&quot;Geli tiradaada aad qiyaastay (1-50): &quot;</span>).
+    qiyaas <span class="syn-keyword">waa</span> <span class="syn-type">tiro</span>(qiyaas_qoraal).
+    
+    <span class="syn-action">waxaad <span class="syn-action">ku dar</span>taa</span> <span class="syn-num">1</span> isku_dayo.
+    <span class="syn-action">waxaad <span class="syn-action">ka jar</span>taa</span> <span class="syn-num">1</span> fursado_haray.
+    qiyaasaha_hore.ku_dar(qiyaas).
+
+    <span class="syn-comment"># Check the guess</span>
+    <span class="syn-keyword">haddii</span> qiyaas <span class="syn-comp">ay la <span class="syn-keyword">mid</span> tahay</span> tirada_qarsoon:
+        waad_badisay <span class="syn-keyword">waa</span> <span class="syn-bool">run</span>.
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;\n🎉 HAMBALYO <span class="syn-interp">{magac}</span>! WAAD GUULAYSATAY!&quot;</span>.
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Tirada saxda ahayd waa: <span class="syn-interp">{tirada_qarsoon}</span>.&quot;</span>.
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Waxaad ku heshay <span class="syn-interp">{isku_dayo}</span> isku-day oo keliya!&quot;</span>.
+        <span class="syn-action">ka bax</span>.
+    <span class="syn-action"><span class="syn-action"><span class="syn-keyword">hadii</span> <span class="syn-keyword">kale</span></span> oo uu</span> qiyaas <span class="syn-comp">uu ka weyn yahay</span> tirada_qarsoon:
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;📉 Aad bay u WEYN TAHAY! Tiri tiro ka yar.&quot;</span>.
+    <span class="syn-action"><span class="syn-action"><span class="syn-keyword">hadii</span> <span class="syn-keyword">kale</span></span> oo uu</span> qiyaas <span class="syn-comp">uu ka yar yahay</span> tirada_qarsoon:
+        <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;📈 Aad bay u YAR TAHAY! Tiri tiro ka weyn.&quot;</span>.
+
+<span class="syn-comment"># If attempts are exhausted without finding the secret number</span>
+<span class="syn-keyword">haddii</span> <span class="syn-logic">ma</span> waad_badisay:
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;\n==================================================&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;😢 WAAN KA XUMAHAY <span class="syn-interp">{magac}</span>, FURASADIHII WAY DHAMMAADEEN!&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Tirada saxda ah ee qarsoonayd waxay ahayd: <span class="syn-interp">{tirada_qarsoon}</span>.&quot;</span>.
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Qiyaasihii aad samaysay waxay ahaayeen: &quot;</span> + <span class="syn-type">qoraal</span>(qiyaasaha_hore).
+    <span class="syn-action">waxaad soo saartaa</span> <span class="syn-string">&quot;Mar kale isku day! Nabad gelyo!&quot;</span>.</code></pre>
+            </div>
+            
+<p class="book-para">#### Detailed Step-by-Step Code Explanation:</p>
+<p class="book-para">1. <strong>Random Generation (<code class="inline-code">nasiib(1, 50)</code>):</strong> The built-in <code class="inline-code">nasiib</code> function produces an unpredictable pseudo-random integer between 1 and 50 inclusive.</p>
+<p class="book-para">2. <strong>State Management:</strong></p>
+<ul class="styled-list"><li><code class="inline-code">isku_dayo</code>: Tracks the number of guesses attempted.</li><li><code class="inline-code">fursado_haray</code>: Initialized at 5 and decremented after each turn.</li><li><code class="inline-code">waad_badisay</code>: A boolean flag initialized to <code class="inline-code">been</code> (False).</li><li><code class="inline-code">qiyaasaha_hore</code>: A list storing past attempts via <code class="inline-code">.ku_dar(qiyaas)</code>.</li></ul>
+<p class="book-para">3. <strong>The Interactive Game Loop (<code class="inline-code">inta fursado_haray &gt; 0:</code>):</strong> The while loop controls gameplay as long as the user has remaining attempts.</p>
+<p class="book-para">4. <strong>Reading and Converting Input:</strong> <code class="inline-code">waydiin()</code> captures player text input, and <code class="inline-code">tiro()</code> immediately converts it to a number for numerical comparison.</p>
+<p class="book-para">5. <strong>Hint Branching & Victory Breakout:</strong></p>
+<ul class="styled-list"><li>If <code class="inline-code">qiyaas == tirada_qarsoon</code>, the player wins: <code class="inline-code">waad_badisay</code> becomes <code class="inline-code">run</code>, celebratory messages are output, and <code class="inline-code">ka bax.</code> terminates the loop immediately.</li><li>If too high or too low, clear navigational hints are printed.</li></ul>
+<p class="book-para">6. <strong>Game Over Condition (<code class="inline-code">haddii ma waad_badisay:</code>):</strong> If the loop ends without victory, the game reveals the secret number and displays the player's history of guesses.</p>
+<p class="book-para"><strong>Sample Terminal Run:</strong></p>
+
+            <div class="code-card">
+              <div class="code-card-header">
+                <div class="window-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="code-card-filename">Console Output</div>
+                <div class="code-card-lang">OUTPUT</div>
+              </div>
+              <pre class="code-body"><code>==================================================
+    🎮 KU SOO DHAWOOW CIYAARTA QIYAASTA TIRADA!   
+==================================================
+Fadlan geli magacaaga, saaxiib: Cali
+Soo dhawoow Cali! Waxaan doortay tiro u dhaxaysa 1 iyo 50.
+Waxaad haysataa 5 fursadood oo aad ku qiyaasto.
+
+--------------------------------------------------
+Fursadaha kuu haray: 5 | Isku-day: 0
+Geli tiradaada aad qiyaastay (1-50): 25
+📉 Aad bay u WEYN TAHAY! Tiri tiro ka yar.
+--------------------------------------------------
+Fursadaha kuu haray: 4 | Isku-day: 1
+Geli tiradaada aad qiyaastay (1-50): 12
+📈 Aad bay u YAR TAHAY! Tiri tiro ka weyn.
+--------------------------------------------------
+Fursadaha kuu haray: 3 | Isku-day: 2
+Geli tiradaada aad qiyaastay (1-50): 18
+
+🎉 HAMBALYO Cali! WAAD GUULAYSATAY!
+Tirada saxda ahayd waa: 18.
+Waxaad ku heshay 3 isku-day oo keliya!</code></pre>
+            </div>
+            
+</body>
+</html>

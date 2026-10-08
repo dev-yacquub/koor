@@ -1,0 +1,34 @@
+# dukaan_qaansheeg.koor — Xisaabiyaha Dukaanka & Soo Saarista Qaansheegta
+# Real-Life Retail POS & Invoice Generator in Koor
+
+alaabta waa [
+    {"magac": "Bariis 25kg", "qiimo": 24, "xaddi": 2},
+    {"magac": "Saliid 5L", "qiimo": 12, "xaddi": 1},
+    {"magac": "Sonkor 10kg", "qiimo": 15, "xaddi": 3}
+].
+
+wadarta_guud waa 0.
+
+waxaad soo saartaa "========================================".
+waxaad soo saartaa "       🛒 QAANSHEEGTA DUKAANKA BARAKO   ".
+waxaad soo saartaa "========================================".
+
+mid kastoo ku jira alaabta ( shay ):
+    qiimaha_shayga waa shay["qiimo"] * shay["xaddi"].
+    waxaad ku dartaa qiimaha_shayga wadarta_guud.
+    waxaad soo saartaa "{shay.magac} x{shay.xaddi} = ${qiimaha_shayga}".
+
+waxaad soo saartaa "----------------------------------------".
+waxaad soo saartaa "Wadarta Hore: ${wadarta_guud}".
+
+qiimo_dhimis waa 0.
+haddii wadarta_guud >= 80:
+    qiimo_dhimis waa wadarta_guud * 0.10.
+    waxaad soo saartaa "Qiimo-dhimis (10%): -${qiimo_dhimis}".
+kale:
+    waxaad soo saartaa "Qiimo-dhimis: $0".
+
+lacagta_bixinta waa wadarta_guud - qiimo_dhimis.
+waxaad soo saartaa "Lacagta Guud ee Bixinta: ${lacagta_bixinta}".
+waxaad soo saartaa "========================================".
+waxaad soo saartaa "Mahadsanid! Mar kale soo dhawoow!".

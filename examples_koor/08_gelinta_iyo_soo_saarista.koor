@@ -1,0 +1,38 @@
+# ==============================================================================
+# 🇸🇴 Gelinta iyo Soo Saaridda ee Koor (Input / Output in Koor)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. SOO SAARIDDA (OUTPUT)
+# ------------------------------------------------------------------------------
+
+# A. Qoraal toos ah (Direct string):
+waxaad soo saartaa "Ku soo dhawoow Koor!".
+
+# B. Soo saarid leh doorsoomayaal gudaha ah (String Interpolation with {var}):
+magac waa "Aamina".
+da' waa 23.
+waxaad soo saartaa "Magaca waa {magac}, da'duna waa {da'}.".
+
+# C. Erayada kale ee soo saarista (daabac / qor / soo saar):
+daabac "Tani waxay u dhigantaa 'print'.".
+qor "Qoraal kooban.".
+soo saar "Xisaab: 5 * 10 = " + qoraal(5 * 10).
+
+# D. Soo saarista xogaha adag (Lists, Dicts, Booleans):
+waxaad soo saartaa "Liis: ", [10, 20, 30].
+waxaad soo saartaa "Qaamuus: ", {"magaalo": "Muqdisho", "sanad": 2026}.
+waxaad soo saartaa "Run/Been: ", run, been, waxba.
+
+# ------------------------------------------------------------------------------
+# 2. GELINTA (INPUT)
+# ------------------------------------------------------------------------------
+
+# A. Qaadashada qoraal (Text input):
+# magac_qof waa waydiin("Fadlan geli magacaaga: ").
+# waxaad soo saartaa "Salaan sare, {magac_qof}!".
+
+# B. Qaadashada tiro iyo xisaabinta (Number input with type conversion):
+# sanad_dhalasho waa tiro(waydiin("Geli sanadkii aad dhalatay: ")).
+# da_hadda waa 2026 - sanad_dhalasho.
+# waxaad soo saartaa "Da'daadu sanadkan waa: {da_hadda} sano.".

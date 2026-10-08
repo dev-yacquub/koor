@@ -1,0 +1,14 @@
+# 🇸🇴 Hawlaha (Functions) ee Koor
+
+hawl salaan(magac):
+    waxaad soo celisaa "Asc {magac}, ku soo dhawoow Koor!"
+
+hawl xisaabi_bedka(ballac, dherer):
+    bed waa ballac * dherer.
+    waxaad soo celisaa bed.
+
+farriin waa salaan("Axmed").
+waxaad soo saartaa farriin.
+
+natiijo waa xisaabi_bedka(5, 8).
+waxaad soo saartaa "Bedka qolku waa: {natiijo} mitir oo labajibbaaran."

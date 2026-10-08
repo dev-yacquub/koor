@@ -1,0 +1,28 @@
+# banki.koor — Nidaamka Maamulka Xisaabta Bankiga (Data Structures & Functions)
+
+hawl abuur_xisaab(magac, baaqi_bilow):
+    waxaad soo celisaa {
+        "magac": magac,
+        "baaqi": baaqi_bilow
+    }.
+
+hawl dhig(xisaab, xaddi):
+    waxaad ku dartaa xaddi xisaab["baaqi"].
+    waxaad soo saartaa "Waxaad dhigatay ${xaddi}. Baaqiga cusub waa: ${xisaab.baaqi}.".
+
+hawl la_bax(xisaab, xaddi):
+    haddii xaddi > xisaab["baaqi"]:
+        waxaad soo saartaa "❌ Khalad: Lacag kugu filan kuma jirto xisaabta!".
+    kale:
+        waxaad ka jartaa xaddi xisaab["baaqi"].
+        waxaad soo saartaa "Waxaad la baxday ${xaddi}. Baaqiga ku haray: ${xisaab.baaqi}.".
+
+hawl daabac_xog(xisaab):
+    waxaad soo saartaa "Xisaabta: {xisaab.magac} | Baaqiga: ${xisaab.baaqi}".
+
+# Tijaabada Bankiga:
+xisaab1 waa abuur_xisaab("Deeqa Axmed", 500).
+dhig(xisaab1, 200).     # Baaqi: $700
+la_bax(xisaab1, 150).   # Baaqi: $550
+la_bax(xisaab1, 800).   # ❌ Lacag kugu filan kuma jirto
+daabac_xog(xisaab1).
