@@ -4,112 +4,82 @@
 
 ---
 
-## 🏛️ Lixda Tiir ee Koor (The 6 Core Pillars)
+## 💾 Soo Degsashada (Downloads)
 
-Luuqadda Koor iyo buuggeeda rasmiga ah waxay si adag u qeexaan oo keliya 6-da konsob ee aasaasiga ah:
-
-1. **Variables & Data Types (Doorsoomayaasha & Noocyada Xogta)**
-   - Baaqyada dabiiciga ah: `magac waa "Aamina".`, `da' waa 23.`
-   - Wax ka beddelka: `waxaad ku dartaa 5 da'.`, `waxaad ka jartaa 2 da'.`
-   - Noocyada: `tiro`, `qoraal`, `run_been`, `waxba`, `liis`, `qaamuus`.
-2. **Control Flow (Xakameynta Socodka)**
-   - Weedhaha tooska ah: `haddi x ay la mid tahay 12 waxaad soo saartaa "waad guulaysatay".`
-   - Shuruudaha baaxadda leh: `haddii`, `hadii kale oo ay / uu` (if else), `kale`.
-   - Wareegyada: `ku celi N jeer:`, `inta shardi:`, `mid kastoo ku jira taxane ( xubin ):`.
-   - Ka bixidda/boodidda: `ka bax.`, `ka bood.`.
-3. **Functions (Hawlaha)**
-   - Naxwaha toosan: `hawshu waa ("iskudhufasho") (x*y)` iyo `qabo hawshan ("iskudhufasho") (12, 3)`.
-   - Naxwaha baloogga: `hawl magac(x): ... waxaad soo celisaa ...`
-4. **Data Structures (Qaababka Xogta)**
-   - Liisaska: `[1, 2, 3]`, `.ku_dar()`, `.ka_saar()`, `.kala_sooc()`, `.rog()`, `dherer()`.
-   - Qoraalka: `.jar()`, `.weyneey()`, `.yaree()`, `.kala_bax()`, `.beddel()`.
-   - Qaamuusyada: `{"magac": "Cali", "da'": 25}`.
-5. **Operators & Expressions (Xisaabiyayaasha & Weedhaha)**
-   - Xisaabta: `+`, `-`, `*`, `/`, `%`.
-   - Isbarbardhigga dabiiciga ah: `ay la mid tahay`, `uu ka weyn yahay`, `ay ka yar tahay`, iwm.
-   - Caqliga: `sidoo kale` / `iyo` (and), `ama` (or), `ma` / `ma aha` (not).
-6. **Input and Output (Gelinta & Soo Saarista)**
-   - Soo saaridda: `waxaad soo saartaa "Salaan {magac}!".`
-   - Gelinta xogta: `waydiin("Fadlan qor magacaaga: ")`.
-
----
-
-## 📕 Buugga Rasmiga ah (The Official Book)
-
-Luuqaddu waxay leedahay buug daabacan oo heer sare ah oo loogu talagalay daabacaadda PDF:
-* **PDF Book:** [`THE_KOOR_BOOK.pdf`](file:///d:/zdiiv/new%20coding%20language/THE_KOOR_BOOK.pdf)
-* **Markdown Source:** [`THE_KOOR_BOOK.md`](file:///d:/zdiiv/new%20coding%20language/THE_KOOR_BOOK.md)
-* **HTML Builder:** [`build_book_pdf.py`](file:///d:/zdiiv/new%20coding%20language/build_book_pdf.py)
-
----
-
-## 💾 Soo Degsashada & Rakibaadda (Download & Setup)
-
-### Habka 1: Rakibaha Tooska ah (Recommended: `KoorSetup.exe`)
-Koor waxa ay leedahay rakibe Windows ah oo **hal gujis ah (One-Click Installer)** kaas oo aan u baahnayn aqoonsi maamule (Zero Admin Rights):
-1. Soo degso [`KoorSetup.exe`](file:///d:/zdiiv/new%20coding%20language/KoorSetup.exe).
-2. Laba-guji (Double-click) si aad u furto saaxadda rakibaadda.
-3. Guji **"Rakib Koor (Install Now)"**.
-4. **Isla markiiba isticmaal:**
-   - Si toos ah ayuu Koor ugu darayaa **User PATH** (adigoon gacanta waxba ku qorin).
-   - Waxa uu xiriirinayaa dhammaan faylasha `.koor` (laba-guji si aad toos ugu furto).
-   - Waxa uu menu-ga midig (Right-Click) ku darayaa **"Ku wad Koor"**.
-   - Waxa uu abuurayaa toobiyaha **Start Menu** iyo **Desktop** ee `Koor REPL`.
-
-### Habka 2: Barnaamijka Tooska ah ee Portable (`koor.exe`)
-Haddii aad si toos ah u soo degsato faylka [`koor.exe`](file:///d:/zdiiv/new%20coding%20language/koor.exe):
-```powershell
-# Si toos ah ugu dar PATH adigoon meel kale aadin:
-.\koor.exe install
-```
+| Faylka | Sharaxaadda | Soo Degso |
+| :--- | :--- | :--- |
+| **`KoorSetup.exe`** | **Rakibaha Windows ee Hal-Gujiska ah** (One-Click Installer). Si toos ah ayuu Koor ugu darayaa PATH, u xiriirinayaa faylasha `.koor`, una abuurayaa toobiyayaasha Start Menu & Desktop adigoon wax Admin ah u baahnayn. | [⬇️ Soo degso KoorSetup.exe](./KoorSetup.exe) |
+| **`koor.exe`** | **Barnaamijka Tooska ah ee Portable**. Fuli meel kasta adigoon waxba rakibin. | [⬇️ Soo degso koor.exe](./koor.exe) |
+| **`THE_KOOR_BOOK.pdf`** | **Buugga Rasmiga ah ee Koor (PDF)**. Buug faahfaahsan oo tayo sare leh (2.87 MB) oo sharaxaya lixda tiir, rakibaadda, iyo mashaariicda dhabta ah. | [📖 Soo degso Buugga PDF](./THE_KOOR_BOOK.pdf) |
+| **`THE_KOOR_BOOK.html`** | **Buugga Webka ee Koor**. Ku akhri biraawsarkaaga si fudud. | [🌐 Fur Buugga HTML](./THE_KOOR_BOOK.html) |
+| **`THE_KOOR_BOOK.md`** | **Qoraalka Buugga ee Markdown**. | [📝 Fur Buugga Markdown](./THE_KOOR_BOOK.md) |
 
 ---
 
 ## 🚀 Bilow Degdeg ah (Quick Start)
 
+### 1. Rakibaadda Hal-Gujiska ah (Windows)
+1. Soo degso [`KoorSetup.exe`](./KoorSetup.exe).
+2. Laba-guji si aad u furto saaxadda rakibaadda.
+3. Guji **"Rakib Koor (Install Now)"**.
+4. **Isla markiiba isticmaal:**
+   - Koor si toos ah ayuu ugu jiraa **User PATH**-kaaga.
+   - Fayl kasta oo `.koor` ah waxaad ku furi kartaa **laba-guji** (double-click).
+   - Waxa uu menu-ga midig (Right-Click) ku darayaa **"Ku wad Koor"**.
+   - Waxa uu abuurayaa toobiyaha **Start Menu** iyo **Desktop** ee `Koor REPL`.
+
+### 2. Adeegsiga Terminal-ka
 Marka aad Koor rakibto, waxaad **terminal kasta** (PowerShell ama CMD) toos uga qori kartaa:
 
-### 1. Fuli koodka Koor (`.koor`):
 ```powershell
+# Fuli fayl kasta oo Koor ah:
 koor run faylkaaga.koor
-# ama laba-guji faylkaaga .koor Explorer-ka dhexdiisa!
-```
 
-### 2. Fur qolka tijaabada tooska ah (REPL):
-```powershell
+# Fur qolka tijaabada tooska ah (REPL):
 koor repl
+
 # ama toos:
 koor
 ```
 
-Tusaale qolka dhexdiisa:
-```text
-koor> x waa 12.
-koor> haddi x ay la mid tahay 12 waxaad soo saartaa "waad guulaysatay".
-waad guulaysatay
-```
+---
+
+## 🏛️ Lixda Tiir ee Koor (The 6 Core Pillars)
+
+1. **Variables & Data Types (Doorsoomayaasha & Noocyada Xogta)**
+   - `x waa 12`
+   - `da' waxaad ku dartaa 5`
+   - `tiro`, `qoraal`, `run_been`, `waxba`, `liis`, `qaamuus`
+2. **Control Flow (Xakameynta Socodka)**
+   - `haddii`, `hadii kale oo ay / uu`, `kale`
+   - `inta tirsade ka yar yahay ama la mid yahay 5`
+   - `mid kastoo ku jira (qof)`
+3. **Functions (Hawlaha)**
+   - `hawl \n magaceed waa : isku dhufasho \n tibxuhu waa : x, y \n hawshu waa : x ku dhufo y \n kaydi natiijada`
+   - `natiijo waa qabo hawshan (isku dhufasho) (6, 7)`
+4. **Data Structures (Qaababka Xogta)**
+   - Liisaska: `[1, 2, 3]`, `.ku_dar()`, `.ka_saar()`, `.kala_sooc()`, `.rog()`
+   - Qaamuusyada: `{"magac": "Cali", "da'": 25}`
+   - Qoraalka: `.jar()`, `.weyneey()`, `.yaree()`
+5. **Operators & Expressions (Xisaabiyayaasha & Weedhaha)**
+   - Xisaabta tooska ah: `ku dar`, `ka jar`, `ku dhufo`, `u qaybi`, `haraaga`
+   - Isbarbardhigga: `ay la mid tahay`, `uu ka weyn yahay`, `ka yar yahay ama la mid yahay`
+   - Caqliga: `sidoo kale` / `iyo` (AND), `ama` (OR), `ma` / `ma aha` (NOT)
+6. **Input & Output (Gelinta & Soo Saarista)**
+   - `soo saar "Tiradaadu waa {natiijo}"`
+   - `x waa tiro waydiin gali lambarka koobaad`
 
 ---
 
-## 🧪 Tijaabinta Koodka (Automated Tests)
-
-Hubi dhammaan unugyada tijaabada ee luuqadda Koor:
-```powershell
-python -m unittest discover tests_koor
-```
-
----
-
-## 📁 Faylasha Mashruuca (Project Structure)
+## 📁 Faylasha Baaqigan (Repository Contents)
 
 ```
-d:\zdiiv\new coding language\
-├── THE_KOOR_BOOK.pdf      # Buugga rasmiga ah ee Koor (PDF)
-├── THE_KOOR_BOOK.md       # Qoraalka buugga ee 6-da tiir
-├── KOOR_GUIDE.md          # Hagaha kooban ee adeegsiga Koor
-├── HOW_KOOR_WORKS.md      # Qaab-dhismeedka gudaha ee Koor
-├── build_book_pdf.py      # Qoraalka dhisidda PDF-ka
-├── koor/                  # Mashiinka Luuqadda Koor (Lexer, Parser, AST, Interpreter)
-├── examples_koor/         # Tusaalooyinka koodka Koor
-└── tests_koor/            # Tijaabooyinka otomaatiga ah
+dev-yacquub/koor (main branch)
+├── KoorSetup.exe          # Rakibaha Windows ee Hal-Gujiska ah (One-Click Installer)
+├── koor.exe               # Barnaamijka Tooska ah ee Koor (Standalone Portable Executable)
+├── THE_KOOR_BOOK.pdf      # Buugga rasmiga ah ee Koor (Official PDF Book - 2.87 MB)
+├── THE_KOOR_BOOK.html     # Buugga qaabaysan ee Webka (HTML Edition)
+├── THE_KOOR_BOOK.md       # Qoraalka buugga ee Markdown
+├── README.md              # Hagaha adeegsiga iyo soo degsashada
+└── koor.ico               # Astaanta rasmiga ah ee Koor (Application Icon)
 ```
